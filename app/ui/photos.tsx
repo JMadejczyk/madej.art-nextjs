@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 
 interface FetchPhotosConfig {
-  photos: string[];
+  photos: { name: string; width: number; height: number }[];
 }
 
 export default function Photos() {
@@ -21,7 +21,15 @@ export default function Photos() {
   return (
     <>
       {images.photos.map((image) => {
-        return <Image src={`/${image}`} width={600} height={600} alt="image" />;
+        return (
+          <Image
+            src={`/images/${image.name}`}
+            width={image.width}
+            height={image.height}
+            // quality={}
+            alt="image"
+          />
+        );
       })}
     </>
   );
