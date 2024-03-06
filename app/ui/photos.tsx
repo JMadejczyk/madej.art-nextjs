@@ -3,6 +3,10 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Photos_column from "./photos_column";
+import Box from "@mui/material/Box";
+import Paper from "@mui/material/Paper";
+import Masonry from "@mui/lab/Masonry";
+import { styled } from "@mui/material/styles";
 
 interface FetchPhotosConfig {
   photos: {
@@ -26,37 +30,57 @@ export default function Photos_layout() {
     });
   }, []);
 
-  function create_n_row_images(mod_number: number): JSX.Element[] {
-    const row_images = images.photos
-      .filter((image, index) => index % 3 === mod_number)
-      .map((image) => {
-        return (
-          <Image
-            src={`/images/${image.name}`}
-            width={image.width}
-            height={image.height}
-            // quality={}
-            alt={image.desc}
-            className="mt-2 mb-2 shadow-photo_shadow"
-            key={image.name}
-            priority={false}
-            placeholder="blur"
-            blurDataURL={image.blured}
-          />
-        );
-      });
-    return row_images;
-  }
+  // function create_n_row_images(mod_number: number): JSX.Element[] {
+  //   const row_images = images.photos
+  //     .filter((image, index) => index % 3 === mod_number)
+  //     .map((image) => {
+  //       return (
+  // <Image
+  //   src={`/images/${image.name}`}
+  //   width={image.width}
+  //   height={image.height}
+  //   // quality={}
+  //   alt={image.desc}
+  //   className="mt-2 mb-2 shadow-photo_shadow"
+  //   key={image.name}
+  //   // priority={true}
+  //   placeholder="blur"
+  //   blurDataURL={image.blured}
+  // />
+  //       );
+  //     });
+  //   return row_images;
+  // }
 
-  const first_row_images = create_n_row_images(0);
-  const second_row_images = create_n_row_images(1);
-  const third_row_images = create_n_row_images(2);
+  // const first_row_images = create_n_row_images(0);
+  // const second_row_images = create_n_row_images(1);
+  // const third_row_images = create_n_row_images(2);
 
   return (
-    <div className="w-7/12 flex flex-row pl-2 pr-2 m-auto">
-      <Photos_column photos={first_row_images} />
+    <div className="xl:w-8/12 m-auto flex justify-center">
+      {/* <Photos_column photos={first_row_images} />
       <Photos_column photos={second_row_images} />
-      <Photos_column photos={third_row_images} />
+      <Photos_column photos={third_row_images} /> */}
+      {
+        <Masonry columns={3} spacing={2}>
+          {images.photos.map((image, index) => (
+            <div key={index}>
+              <Image
+                src={`/images/${image.name}`}
+                width={image.width}
+                height={image.height}
+                // quality={}
+                alt={image.desc}
+                className="shadow-photo_shadow"
+                key={image.name}
+                // priority={true}
+                placeholder="blur"
+                blurDataURL={image.blured}
+              />
+            </div>
+          ))}
+        </Masonry>
+      }
     </div>
   );
 }
