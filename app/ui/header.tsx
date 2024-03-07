@@ -4,7 +4,6 @@ import { FiList } from "react-icons/fi";
 import { goudy } from "@/app/ui/fonts";
 import Menu from "@/app/ui/menu";
 import { useState } from "react";
-import "animate.css";
 
 export default function Header() {
   const [showMenu, setShowMenu] = useState(false);

@@ -46,7 +46,7 @@ export default function Photos_layout(props: {
                 alt={image.desc}
                 className="shadow-photo_shadow"
                 key={image.name}
-                // priority={true}
+                priority={index <= 15 ? true : false}
                 placeholder="blur"
                 blurDataURL={image.blured}
               />

@@ -7,21 +7,36 @@ import {
   FiMessageSquare,
   FiInstagram,
 } from "react-icons/fi";
-import "animate.css";
+// import "animate.css";
+import Link from "next/link";
 
 export default function Menu(props: { showMenu: boolean }) {
   return (
     <div
-      className={`absolute left-0 transition-opacity ${
+      className={`absolute left-0 transition-opacity bg-[#202020bb]
+      backdrop-blur-[10px] w-[17rem] ${
         props.showMenu ? "opacity-100" : "opacity-0"
       }`}
     >
-      <MenuButton content={"Strona główna"} Icon={FiHome} />
-      <MenuButton content={"Krajobrazy"} Icon={FiCamera} />
-      <MenuButton content={"Street photo"} Icon={FiMapPin} />
-      <MenuButton content={"O mnie"} Icon={FiUser} />
-      <MenuButton content={"Kontakt"} Icon={FiMessageSquare} />
-      <MenuButton content={"Instagram"} Icon={FiInstagram} />
+      <Link href="/">
+        <MenuButton content={"Strona główna"} Icon={FiHome} />
+      </Link>
+
+      <Link href="/landscapes">
+        <MenuButton content={"Krajobrazy"} Icon={FiCamera} />
+      </Link>
+      <Link href="/street">
+        <MenuButton content={"Street photo"} Icon={FiMapPin} />
+      </Link>
+      <Link href="/about">
+        <MenuButton content={"O mnie"} Icon={FiUser} />
+      </Link>
+      <Link href="/kontakt">
+        <MenuButton content={"Kontakt"} Icon={FiMessageSquare} />
+      </Link>
+      <Link href="https://www.instagram.com/madej.art/" target="_blank">
+        <MenuButton content={"Instagram"} Icon={FiInstagram} />
+      </Link>
     </div>
   );
 }
