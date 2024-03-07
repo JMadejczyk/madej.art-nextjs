@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Masonry from "@mui/lab/Masonry";
-import useWindowWidth from "@/app/lib/useWindowWidth";
 
 interface FetchPhotosConfig {
   photos: {
@@ -18,7 +17,7 @@ interface FetchPhotosConfig {
 export default function Photos_layout() {
   const [images, setImages] = useState<FetchPhotosConfig>({ photos: [] });
 
-  const width = useWindowWidth();
+  const width = 610;
   useEffect(() => {
     fetch("/data/portraits.json").then((res: Response) => {
       if (res.ok) {
@@ -29,10 +28,12 @@ export default function Photos_layout() {
     });
   }, []);
 
+  console.log("Images has been rerendered");
+
   return (
     <div className="xl:w-7/12 lg:w-8/12 md:w-11/12 md:mr-auto md:ml-auto flex justify-center mt-4 mb-4 mr-2 ml-2">
       {
-        <Masonry columns={width > 600 ? 3 : 2} spacing={2}>
+        <Masonry columns={{ xs: 2, sm: 3, md: 4 }} spacing={2}>
           {images.photos.map((image, index) => (
             <div key={index}>
               <Image
