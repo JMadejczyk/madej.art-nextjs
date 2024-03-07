@@ -11,7 +11,7 @@ export default function Header() {
 
   return (
     <>
-      <div className="bg-dark-gray w-screen text-white p-4 text-center flex items-center ">
+      <div className="bg-dark-gray w-screen text-white p-4 text-center flex items-center">
         <button
           className="p-2.5 border-2 border-transparent rounded-lg hover:bg-[#2c2c2c] hover:border-[#161616]"
           onClick={() => {

@@ -14,12 +14,14 @@ interface FetchPhotosConfig {
   }[];
 }
 
-export default function Photos_layout() {
+export default function Photos_layout(props: {
+  json_file_localization: string;
+  photos_folder: string;
+}) {
   const [images, setImages] = useState<FetchPhotosConfig>({ photos: [] });
 
-  const width = 610;
   useEffect(() => {
-    fetch("/data/portraits.json").then((res: Response) => {
+    fetch(props.json_file_localization).then((res: Response) => {
       if (res.ok) {
         res.json().then((res) => {
           setImages(res);
@@ -37,7 +39,7 @@ export default function Photos_layout() {
           {images.photos.map((image, index) => (
             <div key={index}>
               <Image
-                src={`/images/${image.name}`}
+                src={`${props.photos_folder}/${image.name}`}
                 width={image.width}
                 height={image.height}
                 // quality={}
