@@ -19,7 +19,8 @@ const config: Config = {
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
       boxShadow: {
-        photo_shadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
+        custom_shadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
+        custom_shadow_light: "0px 4px 4px 0px rgba(0, 0, 0, 0.15)",
       },
     },
   },

@@ -13,8 +13,8 @@ import Link from "next/link";
 export default function Menu(props: { showMenu: boolean }) {
   return (
     <div
-      className={`absolute left-0 transition-opacity bg-[#202020bb]
-      backdrop-blur-[10px] w-[17rem] ${
+      className={`absolute left-0 transition-opacity bg-[#202020bb] bg-[url('/img/noise_transparent.png')]
+      backdrop-blur-[10px] w-[17rem] shadow-custom_shadow ${
         props.showMenu ? "opacity-100" : "opacity-0"
       }`}
     >
