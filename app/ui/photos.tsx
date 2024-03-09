@@ -30,6 +30,21 @@ export default function Photos_layout(props: {
     });
   }, []);
 
+  type photoData = {
+    name: string;
+    width: number;
+    height: number;
+    desc: string;
+    blured: string;
+  };
+
+  const handlePhotoClick = (image: photoData) => {
+    console.log(image);
+  };
+
+  // function handlePhotoClick() {
+
+  // }
   console.log("Images has been rerendered");
 
   return (
@@ -53,6 +68,7 @@ export default function Photos_layout(props: {
                 priority={index <= 15 ? true : false}
                 placeholder="blur"
                 blurDataURL={image.blured}
+                onClick={() => handlePhotoClick(image)}
               />
             </div>
           ))}
