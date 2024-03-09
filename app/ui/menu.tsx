@@ -7,16 +7,19 @@ import {
   FiMessageSquare,
   FiInstagram,
 } from "react-icons/fi";
-// import "animate.css";
 import Link from "next/link";
 
-export default function Menu(props: { showMenu: boolean }) {
+export default function Menu(props: {
+  showMenu: boolean;
+  handleMenuTransition: () => void;
+}) {
   return (
     <div
       className={`absolute left-0 transition-opacity bg-[#202020bb] bg-[url('/img/noise_transparent.png')]
       backdrop-blur-[10px] w-[17rem] shadow-custom_shadow ${
         props.showMenu ? "opacity-100" : "opacity-0"
       }`}
+      onTransitionEnd={() => props.handleMenuTransition()}
     >
       <Link href="/">
         <MenuButton content={"Strona główna"} Icon={FiHome} />
