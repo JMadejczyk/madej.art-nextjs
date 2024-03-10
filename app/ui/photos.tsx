@@ -42,9 +42,6 @@ export default function Photos_layout(props: {
     console.log(image);
   };
 
-  // function handlePhotoClick() {
-
-  // }
   console.log("Images has been rerendered");
 
   return (
@@ -63,7 +60,7 @@ export default function Photos_layout(props: {
                 height={image.height}
                 // quality={50}
                 alt={image.desc}
-                className="shadow-custom_shadow"
+                className="shadow-custom_shadow cursor-pointer"
                 key={image.name}
                 priority={index <= 15 ? true : false}
                 placeholder="blur"

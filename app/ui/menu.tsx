@@ -8,17 +8,28 @@ import {
   FiInstagram,
 } from "react-icons/fi";
 import Link from "next/link";
+import useScrollDirecton from "@/app/lib/scroll";
+import { useCallback, useEffect, useState } from "react";
 
 export default function Menu(props: {
   showMenu: boolean;
   handleMenuTransition: () => void;
 }) {
+  const scrollDirection = useScrollDirecton();
+
+  useEffect(() => {
+    if (scrollDirection === "down" && props.showMenu) {
+      props.handleMenuTransition();
+    }
+  }, [scrollDirection]);
+
+  // console.log("Menu rerendered");
   return (
     <div
-      className={`absolute left-0 transition-opacity bg-[#202020bb] bg-[url('/img/noise_transparent.png')]
+      className={`fixed top-24 left-0 transition-opacity bg-[#202020bb] bg-[url('/img/noise_transparent.png')]
       backdrop-blur-[10px] w-[17rem] shadow-custom_shadow ${
         props.showMenu ? "opacity-100" : "opacity-0"
-      }`}
+      } `}
       onTransitionEnd={() => props.handleMenuTransition()}
     >
       <Link href="/">
