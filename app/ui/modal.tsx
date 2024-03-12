@@ -3,10 +3,24 @@ import { useSearchParams, usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 
-function Modal() {
+interface FetchPhotosConfig {
+  photos: {
+    name: string;
+    width: number;
+    height: number;
+    desc: string;
+    blured: string;
+  }[];
+}
+
+function Modal(props: { photos_json: FetchPhotosConfig }) {
   const searchParams = useSearchParams();
   const modal = searchParams.get("modal");
+  const folder = searchParams.get("folder");
+  const name = searchParams.get("name");
   const pathname = usePathname();
+
+  const photoObj = props.photos_json.photos.find((el) => el.name === name);
 
   return (
     <>
@@ -16,17 +30,19 @@ function Modal() {
             <div className="flex flex-col items-center">
               <h3>Modal content</h3>
               <Image
-                src={`/portraits/Img0801_.jpg`}
-                height={1200}
-                width={1800}
-                alt={"portrait"}
+                src={name ? `${folder}/${name}` : `/portraits/Img0801_.jpg`}
+                height={photoObj?.height}
+                width={photoObj?.width}
+                alt={photoObj?.desc ? photoObj?.desc : ""}
                 placeholder="blur"
-                blurDataURL={
-                  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAKCAIAAAD3rtNaAAAACXBIWXMAACTpAAAk6QFQJOf4AAAA50lEQVR4nAHcACP/ABwZECMjGAsNBgABAAQEAAEBABYVDwAyLyQyNSkwMisiIx0PEQ4QEA06QDgAPj8zSE07XlFOYlNOS1FAVVpPSVNIADQ0H2BkWNvR393P2GVnV09URkdIPQAlIAmHh4P4+P/x8v9oaF0yNSM4OywAJyIPaWhl9/n/xcfiXFxTPD0rMjIkACIiFzY2Lsmutr6uuUdIQDI1JjQ1KAAlJB0kJBtVQDleRj8YGxIeHRUjIxoAEQ8JFhYQHRkUNSclGhoVHBoSIx0YAAcGBBMTEykiKCopMw0ODwoLCgsJCA6tNWyMzhuSAAAAAElFTkSuQmCC"
-                }
-                className={`m-auto max-h-full w-auto h-[1200px]  max-w-none`}
+                blurDataURL={photoObj?.blured}
+                className={`m-auto max-h-full w-auto h-[1200px] max-w-none`}
+                quality={90}
               />
               <br />
+              <p>{`${
+                props.photos_json.photos.find((el) => el.name === name)?.name
+              }`}</p>
               <Link href={pathname}>
                 <button type="button" className="bg-light-gray p-2">
                   Close Modal

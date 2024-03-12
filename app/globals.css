@@ -28,6 +28,8 @@ body {
 
 body {
   color: white;
+  background-color: #353535;
+  /* background-image: url("../public/img/noise_transparent.png"); */
 }
 
 @layer utilities {

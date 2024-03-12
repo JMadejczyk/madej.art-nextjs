@@ -5,10 +5,5 @@ export default function GalleriesLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <>
-      {children}
-      <Modal />
-    </>
-  );
+  return <>{children}</>;
 }

@@ -16,31 +16,9 @@ interface FetchPhotosConfig {
 }
 
 export default function Photos_layout(props: {
-  json_file_localization: string;
   photos_folder: string;
+  photos_json: FetchPhotosConfig;
 }) {
-  const [images, setImages] = useState<FetchPhotosConfig>({ photos: [] });
-
-  useEffect(() => {
-    fetch(props.json_file_localization).then((res: Response) => {
-      if (res.ok) {
-        res.json().then((res) => {
-          setImages(res);
-        });
-      }
-    });
-  }, []);
-
-  type photoData = {
-    name: string;
-    width: number;
-    height: number;
-    desc: string;
-    blured: string;
-  };
-
-  const handlePhotoClick = (image: photoData) => {};
-
   console.log("Images has been rerendered");
 
   return (
@@ -51,9 +29,11 @@ export default function Photos_layout(props: {
           spacing={2}
           className="m-0 pb-4"
         >
-          {images.photos.map((image, index) => (
+          {props.photos_json.photos.map((image, index) => (
             <div key={index}>
-              <Link href="?modal=true">
+              <Link
+                href={`?modal=true&folder=${props.photos_folder}&name=${image.name}`}
+              >
                 <Image
                   src={`${props.photos_folder}/${image.name}`}
                   width={image.width}
