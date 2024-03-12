@@ -1,5 +1,6 @@
 import Header from "@/app/ui/header";
-import Photos_layout from "../ui/photos";
+import Photos_layout from "../../ui/photos";
+import Modal from "@/app/ui/modal";
 
 export default function Home() {
   return (
@@ -9,6 +10,7 @@ export default function Home() {
         json_file_localization={"/data/landscapes.json"}
         photos_folder={"/landscapes"}
       />
+      {/* <Modal /> */}
     </main>
   );
 }

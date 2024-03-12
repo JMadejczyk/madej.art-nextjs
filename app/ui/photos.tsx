@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Masonry from "@mui/lab/Masonry";
+import Link from "next/link";
 
 interface FetchPhotosConfig {
   photos: {
@@ -38,9 +39,7 @@ export default function Photos_layout(props: {
     blured: string;
   };
 
-  const handlePhotoClick = (image: photoData) => {
-    console.log(image);
-  };
+  const handlePhotoClick = (image: photoData) => {};
 
   console.log("Images has been rerendered");
 
@@ -54,19 +53,21 @@ export default function Photos_layout(props: {
         >
           {images.photos.map((image, index) => (
             <div key={index}>
-              <Image
-                src={`${props.photos_folder}/${image.name}`}
-                width={image.width}
-                height={image.height}
-                // quality={50}
-                alt={image.desc}
-                className="shadow-custom_shadow cursor-pointer"
-                key={image.name}
-                priority={index <= 15 ? true : false}
-                placeholder="blur"
-                blurDataURL={image.blured}
-                onClick={() => handlePhotoClick(image)}
-              />
+              <Link href="?modal=true">
+                <Image
+                  src={`${props.photos_folder}/${image.name}`}
+                  width={image.width}
+                  height={image.height}
+                  // quality={50}
+                  alt={image.desc}
+                  className="shadow-custom_shadow cursor-pointer"
+                  key={image.name}
+                  priority={index <= 15 ? true : false}
+                  placeholder="blur"
+                  blurDataURL={image.blured}
+                  // onClick={() => handlePhotoClick(image)}
+                />
+              </Link>
             </div>
           ))}
         </Masonry>
