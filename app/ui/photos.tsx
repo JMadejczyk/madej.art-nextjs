@@ -28,6 +28,9 @@ export default function Photos_layout(props: {
           columns={{ xs: 2, sm: 3, md: 4 }}
           spacing={2}
           className="m-0 pb-4"
+          defaultHeight={6000}
+          // defaultColumns={4}
+          defaultSpacing={2}
         >
           {props.photos_json.photos.map((image, index) => (
             <div key={index}>
