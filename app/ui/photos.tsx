@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 import Image from "next/image";
 import Masonry from "@mui/lab/Masonry";
 import Link from "next/link";
@@ -19,7 +19,7 @@ export default function Photos_layout(props: {
   photos_folder: string;
   photos_json: FetchPhotosConfig;
 }) {
-  console.log("Images has been rerendered");
+  // console.log("Images has been rerendered");
 
   return (
     <div className="xl:w-7/12 lg:w-8/12 md:w-11/12 md:mr-auto md:ml-auto flex justify-center mt-2  mr-2 ml-2">
@@ -36,6 +36,7 @@ export default function Photos_layout(props: {
             <div key={index}>
               <Link
                 href={`?modal=true&folder=${props.photos_folder}&name=${image.name}`}
+                scroll={false}
               >
                 <Image
                   src={`${props.photos_folder}/${image.name}`}
