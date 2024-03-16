@@ -20,11 +20,9 @@ interface FetchPhotosConfig {
 function Modal(props: { photos_json: FetchPhotosConfig }) {
   const searchParams = useSearchParams();
   const modal = searchParams.get("modal");
-
   const folder = searchParams.get("folder");
   const name = searchParams.get("name");
   const pathname = usePathname();
-
   const photoObj = props.photos_json.photos.find((el) => el.name === name);
   const currPhotoId = props.photos_json.photos.findIndex(
     (el) => el === photoObj
@@ -35,11 +33,6 @@ function Modal(props: { photos_json: FetchPhotosConfig }) {
   // console.log(currPhotoId);
   const router = useRouter();
 
-  // ?????
-  // const [photoObj, setPhotoObject] = useState(
-  //   props.photos_json.photos.find((el) => el.name === name)
-  // );
-  // ?????
   console.log("Modal has been rerendered!");
 
   const handleNextPhoto = () =>
