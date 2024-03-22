@@ -109,6 +109,7 @@ function Modal(props: { photos_json: FetchPhotosConfig }) {
                 alt={photoObj.desc}
                 placeholder="blur"
                 blurDataURL={photoObj.blured}
+                priority={true}
                 // className={""}
                 className="max-h-[80vh] w-auto"
                 quality={90}
