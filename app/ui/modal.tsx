@@ -89,22 +89,21 @@ function Modal(props: { photos_json: FetchPhotosConfig }) {
           <motion.div
             className="fixed top-0 left-0 h-screen w-full flex justify-center items-center"
             onClick={(e) => router.push(pathname, { scroll: false })}
+            exit={{ backdropFilter: "none", backgroundColor: "rgb(0 0 0 0)" }}
+            initial={{
+              backdropFilter: "none",
+              backgroundColor: "rgb(0 0 0 0)",
+            }}
+            animate={{
+              backdropFilter: "blur(8px)",
+              backgroundColor: "rgb(32 32 32 0.5)",
+            }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
           >
             <motion.dialog
               className=" bg-transparent bg-opacity-0 z-50  
               flex justify-center items-center select-none"
               // backdrop-blur
-
-              // exit={{ backdropFilter: "none", backgroundColor: "transparent" }}
-              // initial={{
-              //   backdropFilter: "none",
-              //   backgroundColor: "transparent",
-              // }}
-              // animate={{
-              //   backdropFilter: "blur(8px)",
-              //   backgroundColor: "rgb(32 32 32 0.5)",
-              // }}
-              // transition={{ duration: 0.3, ease: "easeInOut" }}
 
               layout
             >
