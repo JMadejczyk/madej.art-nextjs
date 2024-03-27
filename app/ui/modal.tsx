@@ -31,7 +31,6 @@ function Modal(props: { photos_json: FetchPhotosConfig }) {
   const nextPhotoName = props.photos_json.photos[currPhotoId + 1]?.name;
   const prevPhotoName = props.photos_json.photos[currPhotoId - 1]?.name;
 
-  // let isNext: boolean = true;
   const [isNext, setIsNext] = useState(true);
   // console.log(currPhotoId);
   const router = useRouter();
@@ -135,7 +134,6 @@ function Modal(props: { photos_json: FetchPhotosConfig }) {
                 <div
                   className="absolute left-0 h-full w-[50%] text-transparent hover:text-[#707070]"
                   onClick={() => {
-                    setIsNext(false);
                     handlePrevPhoto();
                   }}
                 >
@@ -176,7 +174,6 @@ function Modal(props: { photos_json: FetchPhotosConfig }) {
                 <div
                   className="absolute right-0 top-0 h-full w-[50%] text-transparent hover:text-[#707070]"
                   onClick={() => {
-                    setIsNext(true);
                     handleNextPhoto();
                   }}
                 >
