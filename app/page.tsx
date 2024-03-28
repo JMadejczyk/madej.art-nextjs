@@ -30,8 +30,9 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="min-h-screen h-auto bg-light-gray bg-[url('/img/noise_transparent.png')] bg-fixed">
-      <Header />
+    <main
+      className={`min-h-screen h-auto bg-light-gray bg-[url('/img/noise_transparent.png')] bg-fixed`}
+    >
       <Suspense fallback={<Loading />}>
         <Photos_layout photos_folder={"/portraits"} photos_json={images} />
       </Suspense>

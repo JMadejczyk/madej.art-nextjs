@@ -21,7 +21,7 @@ export default function Header() {
       <div
         className={`bg-dark-gray bg-[url('/img/noise_transparent.png')] text-white p-4 text-center flex items-center shadow-custom_shadow_light sticky ${
           scrollDirection === "down" ? "-top-24" : "top-0"
-        } transition-all duration-500`}
+        } transition-all duration-500 z-10`}
       >
         <button
           className="p-2.5 border-2 border-transparent rounded-lg md:absolute md:left-4 hover:bg-[#2c2c2c] hover:border-[#161616]"

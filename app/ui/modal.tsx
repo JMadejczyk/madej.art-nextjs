@@ -31,7 +31,6 @@ function Modal(props: { photos_json: FetchPhotosConfig }) {
   const nextPhotoName = props.photos_json.photos[currPhotoId + 1]?.name;
   const prevPhotoName = props.photos_json.photos[currPhotoId - 1]?.name;
 
-  //Check if useState below is necessary
   const [isNext, setIsNext] = useState(true);
 
   // console.log(currPhotoId);
@@ -111,7 +110,7 @@ function Modal(props: { photos_json: FetchPhotosConfig }) {
       <AnimatePresence>
         {modal && photoObj && (
           <motion.div
-            className="fixed top-0 left-0 h-screen w-full flex justify-center items-center focus:outline-none outline-dark-gray"
+            className="z-20 fixed top-0 left-0 h-screen w-full flex justify-center items-center focus:outline-none outline-dark-gray"
             onClick={(e) => router.push(pathname, { scroll: false })}
             exit={{ backdropFilter: "none", backgroundColor: "rgb(0 0 0 0)" }}
             initial={{
@@ -129,11 +128,11 @@ function Modal(props: { photos_json: FetchPhotosConfig }) {
                 <motion.div
                   exit={{
                     opacity: 0,
-                    scale: 0.3,
+                    scale: 0,
                   }}
                   initial={{
                     opacity: 0,
-                    scale: 0.3,
+                    scale: 0,
                   }}
                   animate={{
                     opacity: 1,
@@ -149,12 +148,14 @@ function Modal(props: { photos_json: FetchPhotosConfig }) {
                         translateX: isNext
                           ? photoObj.width / 4
                           : -photoObj.width / 4,
+                        opacity: 0,
                       }}
-                      animate={{ translateX: 0 }}
+                      animate={{ translateX: 0, opacity: 1 }}
                       exit={{
                         translateX: isNext
                           ? -photoObj.width / 4
                           : photoObj.width / 4,
+                        opacity: 0,
                       }}
                       transition={{ duration: 0.125 }}
                       key={photoObj.name}

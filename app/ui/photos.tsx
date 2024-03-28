@@ -4,6 +4,8 @@
 import Image from "next/image";
 import Masonry from "@mui/lab/Masonry";
 import Link from "next/link";
+import { goudy } from "@/app/ui/fonts";
+import styles from "./photos.module.css";
 
 interface FetchPhotosConfig {
   photos: {
@@ -15,6 +17,46 @@ interface FetchPhotosConfig {
   }[];
 }
 
+interface PhotoConfig {
+  name: string;
+  width: number;
+  height: number;
+  desc: string;
+  blured: string;
+}
+
+const SmallImage = (props: {
+  photos_folder: string;
+  image: PhotoConfig;
+  index: number;
+}) => {
+  return (
+    <Link
+      href={`?modal=true&folder=${props.photos_folder}&name=${props.image.name}`}
+      scroll={false}
+      className={`${styles.photo} select-none relative`}
+    >
+      <Image
+        src={`${props.photos_folder}/${props.image.name}`}
+        width={props.image.width}
+        height={props.image.height}
+        quality={60}
+        alt={props.image.desc}
+        className="shadow-custom_shadow cursor-pointer"
+        key={props.image.name}
+        priority={props.index <= 15 ? true : false}
+        placeholder="blur"
+        blurDataURL={props.image.blured}
+      />
+      <div
+        className={`${styles.descr} absolute left-0 bottom-0 w-full opacity-0 hover:opacity-100 text-[#161616] h-9 flex justify-center items-center bg-[#ffffff33] backdrop-blur-[20px] duration-[400ms] ${goudy.className}`}
+      >
+        Kliknij, aby powiekszyć
+      </div>
+    </Link>
+  );
+};
+
 export default function Photos_layout(props: {
   photos_folder: string;
   photos_json: FetchPhotosConfig;
@@ -22,7 +64,7 @@ export default function Photos_layout(props: {
   // console.log("Images has been rerendered");
 
   return (
-    <div className="xl:w-7/12 lg:w-8/12 md:w-11/12 md:mr-auto md:ml-auto flex justify-center mt-2  mr-2 ml-2">
+    <div className="2xl:w-7/12 xl:w-9/12 lg:w-10/12 md:w-11/12 md:mr-auto md:ml-auto flex justify-center mt-2  mr-2 ml-2">
       {
         <Masonry
           columns={{ xs: 2, sm: 3, md: 4 }}
@@ -34,24 +76,11 @@ export default function Photos_layout(props: {
         >
           {props.photos_json.photos.map((image, index) => (
             <div key={index}>
-              <Link
-                href={`?modal=true&folder=${props.photos_folder}&name=${image.name}`}
-                scroll={false}
-              >
-                <Image
-                  src={`${props.photos_folder}/${image.name}`}
-                  width={image.width}
-                  height={image.height}
-                  // quality={50}
-                  alt={image.desc}
-                  className="shadow-custom_shadow cursor-pointer"
-                  key={image.name}
-                  priority={index <= 15 ? true : false}
-                  placeholder="blur"
-                  blurDataURL={image.blured}
-                  // onClick={() => handlePhotoClick(image)}
-                />
-              </Link>
+              <SmallImage
+                photos_folder={props.photos_folder}
+                image={image}
+                index={index}
+              />
             </div>
           ))}
         </Masonry>

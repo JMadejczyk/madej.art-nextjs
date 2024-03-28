@@ -31,7 +31,6 @@ export default function Home() {
 
   return (
     <main className="min-h-screen h-auto bg-light-gray bg-[url('/img/noise_transparent.png')]">
-      <Header />
       <Suspense>
         <Photos_layout photos_folder={"/street"} photos_json={images} />
       </Suspense>
