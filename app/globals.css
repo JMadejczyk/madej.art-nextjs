@@ -37,3 +37,7 @@ body {
     text-wrap: balance;
   }
 }
+
+dialog:focus {
+  outline: none;
+}
