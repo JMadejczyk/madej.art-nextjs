@@ -64,7 +64,7 @@ export default function Photos_layout(props: {
   // console.log("Images has been rerendered");
 
   return (
-    <div className="2xl:w-7/12 xl:w-9/12 lg:w-10/12 md:w-11/12 md:mr-auto md:ml-auto flex justify-center mt-2  mr-2 ml-2">
+    <div className="2xl:w-7/12 xl:w-9/12 lg:w-10/12 md:w-11/12 md:mr-auto md:ml-auto flex justify-center mt-2  mr-2 ml-2 pb-16">
       {
         <Masonry
           columns={{ xs: 2, sm: 3, md: 4 }}

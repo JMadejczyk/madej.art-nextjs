@@ -7,7 +7,7 @@ const year = new Date().getFullYear();
 export default function Footer() {
   return (
     <div
-      className={`bg-dark-gray bg-[url('/img/noise_transparent.png')] text-white p-4 text-center flex items-center justify-center shadow-custom_shadow_light antialiased ${goudy.className}`}
+      className={` w-full bg-dark-gray bg-[url('/img/noise_transparent.png')] text-white p-4 text-center flex items-center justify-center shadow-custom_shadow_light antialiased ${goudy.className}`}
     >
       <span>Copyright </span> &nbsp;
       <RiCopyrightLine /> &nbsp;

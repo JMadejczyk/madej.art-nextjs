@@ -17,8 +17,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pl">
-      <body className={`${inter.className} min-h-screen`}>
+    <html lang="pl" className="min-h-screen">
+      <body className={`${inter.className} min-h-screen relative`}>
         <Header />
         {children}
         <Footer />
