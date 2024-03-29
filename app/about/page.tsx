@@ -41,11 +41,11 @@ export default function About() {
     <div className="bg-light-gray bg-[url('/img/noise_transparent.png')] bg-fixed min-h-screen flex flex-col justify-center">
       {/* <Header /> */}
       <main
-        className={`min-h-full h-auto flex flex-row justify-center items-center pb-36`}
+        className={`min-h-full h-auto flex flex-col-reverse md:flex-row justify-center items-center pb-36`}
       >
         {/* TODO text letter by letter showing animation */}
         <motion.p
-          className={`w-[400px] font-[#F2F2F2] text-[#F2F2F2] text-2xl m-16 drop-shadow-custom_shadow ${caveat.className}`}
+          className={`w-4/6 md:w-[400px] font-[#F2F2F2] text-[#F2F2F2] text-2xl m-6 md:m-16 drop-shadow-custom_shadow ${caveat.className}`}
           variants={sentence}
           initial="hidden"
           animate="visible"
@@ -89,7 +89,7 @@ export default function About() {
           })}
         </motion.p>
         <motion.div
-          className="bg-[url('/img/noise_transparent.png')] bg-fixed w-[400px] bg-dark-gray p-8 rounded-md shadow-custom_shadow_light mt-10 mb-10"
+          className="bg-[url('/img/noise_transparent.png')] bg-fixed w-4/6 md:w-[400px] bg-dark-gray p-6 md:p-8 rounded-md shadow-custom_shadow_light m-10"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1 }}
