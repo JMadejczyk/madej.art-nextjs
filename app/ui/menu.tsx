@@ -35,7 +35,6 @@ export default function Menu(props: {
       <Link href="/">
         <MenuButton content={"Strona główna"} Icon={FiHome} />
       </Link>
-
       <Link href="/landscapes">
         <MenuButton content={"Krajobrazy"} Icon={FiCamera} />
       </Link>
@@ -45,7 +44,7 @@ export default function Menu(props: {
       <Link href="/about">
         <MenuButton content={"O mnie"} Icon={FiUser} />
       </Link>
-      <Link href="/kontakt">
+      <Link href="/contact">
         <MenuButton content={"Kontakt"} Icon={FiMessageSquare} />
       </Link>
       <Link href="https://www.instagram.com/madej.art/" target="_blank">

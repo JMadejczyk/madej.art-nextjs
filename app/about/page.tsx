@@ -28,6 +28,7 @@ const letter = {
     y: 0,
     transition: {
       duration: 1,
+      ease: "easeOut",
     },
   },
 };
