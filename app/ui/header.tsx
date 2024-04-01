@@ -3,7 +3,7 @@
 import { FiList } from "react-icons/fi";
 import { goudy } from "@/app/ui/fonts";
 import Menu from "@/app/ui/menu";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import useScrollDirecton from "@/app/lib/scroll";
 
 export default function Header() {
@@ -15,6 +15,8 @@ export default function Header() {
     setShowMenu(false);
   };
   const scrollDirection = useScrollDirecton();
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
   // console.log("header rerendered");
   return (
     <>
@@ -31,6 +33,7 @@ export default function Header() {
               setMountMenu(true);
             }
           }}
+          ref={buttonRef}
         >
           <FiList className="h-8 w-8 text-[#99999999]" />
         </button>
@@ -42,7 +45,11 @@ export default function Header() {
         </p>
       </div>
       {mountMenu && (
-        <Menu showMenu={showMenu} handleMenuTransition={handleMenuTransition} />
+        <Menu
+          showMenu={showMenu}
+          handleMenuTransition={handleMenuTransition}
+          buttonRef={buttonRef}
+        />
       )}
     </>
   );
