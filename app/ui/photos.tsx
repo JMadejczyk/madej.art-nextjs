@@ -34,24 +34,26 @@ const SmallImage = (props: {
     <Link
       href={`?modal=true&folder=${props.photos_folder}&name=${props.image.name}`}
       scroll={false}
-      className={`${styles.photo} select-none relative`}
+      className={`select-none`}
     >
-      <Image
-        src={`${props.photos_folder}/${props.image.name}`}
-        width={props.image.width}
-        height={props.image.height}
-        quality={60}
-        alt={props.image.desc}
-        className="shadow-custom_shadow cursor-pointer"
-        key={props.image.name}
-        priority={props.index <= 15 ? true : false}
-        placeholder="blur"
-        blurDataURL={props.image.blured}
-      />
-      <div
-        className={`${styles.descr} absolute left-0 bottom-0 w-full opacity-0 hover:opacity-100 text-[#161616] h-9 flex justify-center items-center bg-[#ffffff33] backdrop-blur-[20px] duration-[400ms] ${goudy.className}`}
-      >
-        Kliknij, aby powiekszyć
+      <div className={`${styles.photo} w-full relative`}>
+        <Image
+          src={`${props.photos_folder}/${props.image.name}`}
+          width={props.image.width}
+          height={props.image.height}
+          quality={60}
+          alt={props.image.desc}
+          className="shadow-custom_shadow cursor-pointer"
+          key={props.image.name}
+          priority={props.index <= 15 ? true : false}
+          placeholder="blur"
+          blurDataURL={props.image.blured}
+        />
+        <div
+          className={`w-full ${styles.descr} absolute left-0 bottom-0 opacity-0 hover:opacity-100 text-[#161616] h-9 flex justify-center items-center bg-[#ffffff33] backdrop-blur-[20px] duration-[400ms] ${goudy.className}`}
+        >
+          Kliknij, aby powiekszyć
+        </div>
       </div>
     </Link>
   );

@@ -2,9 +2,7 @@
 import Image from "next/image";
 import photo from "@/public/img/_KWJ9509.jpg";
 import { caveat } from "@/app/ui/fonts";
-import Header from "../ui/header";
-import Footer from "../ui/footer";
-import { motion, animate } from "framer-motion";
+import { motion } from "framer-motion";
 
 const sentence = {
   hidden: { opacity: 1 },
