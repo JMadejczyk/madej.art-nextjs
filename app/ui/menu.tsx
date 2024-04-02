@@ -11,6 +11,8 @@ import Link from "next/link";
 import useScrollDirecton from "@/app/lib/scroll";
 import { RefObject, useCallback, useEffect, useRef } from "react";
 
+// TODO menu animation - sliding from left screen border
+
 export default function Menu(props: {
   showMenu: boolean;
   handleMenuTransition: () => void;
@@ -18,18 +20,6 @@ export default function Menu(props: {
 }) {
   const scrollDirection = useScrollDirecton();
   const menuRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (scrollDirection === "down" && props.showMenu) {
-      props.handleMenuTransition();
-    }
-  }, [scrollDirection]);
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  });
 
   const handleClickOutside = (e: any) => {
     if (
@@ -41,6 +31,21 @@ export default function Menu(props: {
       props.handleMenuTransition();
     }
   };
+
+  const showMenu = props.showMenu;
+  const handleMenuTransition = props.handleMenuTransition;
+  useEffect(() => {
+    if (scrollDirection === "down" && showMenu) {
+      handleMenuTransition();
+    }
+  }, [scrollDirection, showMenu, handleMenuTransition]);
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  });
+
   // console.log("Menu rerendered");
   return (
     <div
