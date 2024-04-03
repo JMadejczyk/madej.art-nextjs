@@ -19,11 +19,12 @@ const sentence = {
 const letter = {
   hidden: {
     opacity: 0,
-    y: 10,
+    y: 8,
   },
   visible: {
     opacity: 1,
     y: 0,
+    scale: 1,
     transition: {
       duration: 1,
       ease: "easeOut",
@@ -36,8 +37,8 @@ export default function About() {
     "„Przykazanie dla fotografów i innych twórców: ^nie pożyczaj duszy od innego artysty, choćby nie ^wiem jak ci się spodobała, ponieważ w tym samym ^momencie stracisz swoją duszę, która jest źródłem ^wyjątkowości tego, co robisz” – Joanna Rybczyńska";
   return (
     <div className="bg-light-gray bg-[url('/img/noise_transparent.png')] bg-fixed min-h-screen flex flex-col justify-center">
-      <main
-        className={`min-h-full h-auto flex flex-col-reverse lg:flex-row justify-center items-center pb-36`}
+      <div
+        className={`min-h-screen h-auto flex flex-col-reverse lg:flex-row justify-center items-center pb-36`}
       >
         <motion.div
           className={`w-[345px] sm:w-[430px] md:w-[415px] font-[#F2F2F2] text-[#F2F2F2]  text-xl sm:text-2xl ml-6 mr-6 md:mr-16 md:ml-16 drop-shadow-custom_shadow flex flex-wrap ${caveat.className}`}
@@ -76,7 +77,10 @@ export default function About() {
         >
           <Image src={photo} alt="Jakub Madejczyk" priority />
         </motion.div>
-      </main>
+      </div>
+      <div
+        className={`min-h-screen h-auto flex flex-col-reverse lg:flex-row justify-center items-center pb-36`}
+      ></div>
     </div>
   );
 }
