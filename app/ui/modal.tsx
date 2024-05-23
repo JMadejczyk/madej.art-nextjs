@@ -101,7 +101,6 @@ function Modal(props: { photos_json: FetchPhotosConfig }) {
     searchParams,
     folder,
     name,
-    folder,
     nextPhotoName,
     prevPhotoName,
   ]);
