@@ -43,6 +43,12 @@ export default function Contact() {
           id="tel"
           placeholder="Numer telefonu"
         />
+        <button
+          type="submit"
+          className="bg-dark-gray p-4 w-fit rounded-md shadow-md hover:bg-[#292929] transition-colors duration-300 ease-in-out"
+        >
+          Zatwierdź
+        </button>
       </form>
     </div>
   );
