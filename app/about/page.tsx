@@ -34,7 +34,7 @@ const letter = {
   },
 };
 
-export function First() {
+function First() {
   const lines =
     "„Przykazanie dla fotografów i innych twórców: ^nie pożyczaj duszy od innego artysty, choćby nie ^wiem jak ci się spodobała, ponieważ w tym samym ^momencie stracisz swoją duszę, która jest źródłem ^wyjątkowości tego, co robisz” – Joanna Rybczyńska";
   return (
@@ -83,7 +83,7 @@ export function First() {
   );
 }
 
-export function Second() {
+function Second() {
   return (
     <div className="bg-light-gray bg-[url('/img/noise_transparent.png')] bg-fixed min-h-[90vh] flex flex-col justify-center">
       <div
