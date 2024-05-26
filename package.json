@@ -7,8 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "serverdev": "nodemon db/server.js",
-    "serverstart": "node db/server.js"
+    "serverdev": "nodemon backend/server.js",
+    "serverstart": "node backend/server.js"
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",
@@ -17,6 +17,7 @@
     "@mui/lab": "^5.0.0-alpha.167",
     "@mui/material": "^5.15.12",
     "bcrypt": "^5.1.1",
+    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "express": "^4.19.2",
     "express-session": "^1.18.0",
