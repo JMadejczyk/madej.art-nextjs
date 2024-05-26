@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const authRoute = require("./routes/auth");
+const photosRoute = require("./routes/photos");
 
 const app = express();
 const port = 3001;
@@ -63,6 +64,7 @@ app.use(
 ////////////////////////////////////////////////////////////////////
 
 app.use("/api/auth", authRoute);
+app.use("/api/photos", photosRoute);
 
 app.listen(port, () => {
   console.log(`App running on http://localhost:${port}`);

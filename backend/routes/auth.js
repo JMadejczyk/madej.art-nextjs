@@ -28,17 +28,18 @@ router.post("/login", async (req, res) => {
       bcrypt.compare(password, row.password, function (err, result) {
         if (result) {
           // Passwords match
-          res.status(200).send({ message: "User authenticated" });
+          req.session.authenticated = true;
+          return res.status(200).send({ message: "User authenticated" });
         } else {
           // Passwords don't match
           bcrypt.hash(password, 10, function (err, hash) {
             // console.log(hash, row.password);
           });
-          res.status(401).send({ message: "Invalid password" });
+          return res.status(401).send({ message: "Invalid password" });
         }
       });
     } else {
-      res.status(401).send({ message: "User not found" });
+      return res.status(401).send({ message: "User not found" });
     }
   });
 });
