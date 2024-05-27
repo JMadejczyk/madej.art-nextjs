@@ -29,42 +29,8 @@ app.use(
     // }),
   })
 );
-
-////////////////////////////////////////////////////////////////////
-
-// app.get("/", (req, res) => {
-//   let db = new sqlite3.Database(
-//     "./portfolio.db",
-//     sqlite3.OPEN_READONLY,
-//     (err) => {
-//       if (err) {
-//         console.error(err.message);
-//       }
-//     }
-//   );
-
-//   let sql = `SELECT * FROM photos`;
-
-//   db.all(sql, [], (err, rows) => {
-//     if (err) {
-//       throw err;
-//     }
-//     res.send(rows);
-//   });
-
-//   db.close((err) => {
-//     if (err) {
-//       console.error(err.message);
-//     }
-//   });
-// });
-
-////////////////////////////////////////////////////////////////////
-
-////////////////////////////////////////////////////////////////////
-
-app.use("/api/auth", authRoute);
 app.use("/api/photos", photosRoute);
+app.use("/api/auth", authRoute);
 
 app.listen(port, () => {
   console.log(`App running on http://localhost:${port}`);
