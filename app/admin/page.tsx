@@ -6,7 +6,7 @@ export default function AdminPanel() {
   const [password, setPassword] = useState("");
 
   const handleLogin = () => {
-    fetch("http://localhost:3001/login", {
+    fetch("http://localhost:3001/api/auth/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
