@@ -3,7 +3,10 @@ const bodyParser = require("body-parser");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const authRoute = require("./routes/auth");
-const photosRoute = require("./routes/photos");
+const getRoute = require("./routes/get");
+const addRoute = require("./routes/add");
+const removeRoute = require("./routes/remove");
+const changeRoute = require("./routes/change");
 
 const app = express();
 const port = 3001;
@@ -20,7 +23,8 @@ app.use(cors());
 
 app.use(
   session({
-    secret: "Super secret secret",
+    secret:
+      "Hottentottenstottertrottelmutterbeutelrattenlattengitterkofferattentäter",
     // cookie: {},
     resave: false,
     saveUninitialized: false,
@@ -29,8 +33,12 @@ app.use(
     // }),
   })
 );
-app.use("/api/photos", photosRoute);
+
+app.use("/api/photos/get", getRoute);
 app.use("/api/auth", authRoute);
+app.use("/api/photos/add", addRoute);
+app.use("/api/photos/remove", removeRoute);
+app.use("/api/photos/change", changeRoute);
 
 app.listen(port, () => {
   console.log(`App running on http://localhost:${port}`);
