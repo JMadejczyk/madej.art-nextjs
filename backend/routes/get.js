@@ -1,4 +1,5 @@
 const { Router } = require("express");
+const { get } = require("http");
 const sqlite3 = require("sqlite3").verbose();
 
 const router = Router();
@@ -14,9 +15,15 @@ router.get("/", (req, res) => {
     }
   );
 
-  let sql = `SELECT * FROM photos`;
+  let data = req.query.tags.split(",");
+  console.log(data);
 
-  db.all(sql, [], (err, rows) => {
+  // let keyword = req.query.keyword;
+
+  let placeholders = data.map(() => "?").join(",");
+  let sql = `SELECT * FROM photos join tags_photos on photos.photo_id = tags_photos.photo_id join tags on tags.tag_id = tags_photos.tag_id WHERE tags.name in (${placeholders})`;
+
+  db.all(sql, data, (err, rows) => {
     if (err) {
       throw err;
     }
