@@ -72,6 +72,52 @@ router.use((req, res, next) => {
 
 ////////////////////////////////////////////////////////////////
 
+router.use((req, res, next) => {
+  let db = new sqlite3.Database(
+    "./backend/database/portfolio.db",
+    sqlite3.OPEN_READWRITE,
+    (err) => {
+      if (err) {
+        console.error(err.message);
+      }
+    }
+  );
+
+  const data = req.body;
+  // console.log(data);
+  // let tags = data["photos"].map((photo) => photo.tags).flat();
+  data["photos"].forEach((photo) => {
+    const { photo_id, tags } = photo;
+    tags.forEach((tag) => {
+      let sql = `select tag_id from tags where name = ?`;
+      db.get(sql, [tag], (err, row) => {
+        if (err) {
+          throw err;
+        }
+        if (row) {
+          let sql2 = `select * from tags_photos where photo_id = ? and tag_id = ?`;
+          db.get(sql2, [photo_id, row["tag_id"]], (err, row2) => {
+            if (err) {
+              throw err;
+            }
+            if (!row2) {
+              let sql3 = `INSERT INTO tags_photos (photo_id, tag_id) VALUES (?, ?)`;
+              db.run(sql3, [photo_id, row["tag_id"]], (err) => {
+                if (err) {
+                  throw err;
+                }
+              });
+            }
+          });
+        }
+      });
+    });
+  });
+  next();
+});
+
+////////////////////////////////////////////////////////////////
+
 router.post("/top", (req, res) => {
   let db = new sqlite3.Database(
     "./backend/database/portfolio.db",
@@ -222,5 +268,7 @@ router.post("/bottom", (req, res) => {
     });
   });
 });
+
+////////////////////////////////////////////////////////////////
 
 module.exports = router;

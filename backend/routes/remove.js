@@ -20,6 +20,13 @@ router.post("/drop", (req, res) => {
     if (err) {
       throw err;
     }
+    let sql2 = `delete from tags_photos`;
+    db.run(sql2, (err) => {
+      if (err) {
+        throw err;
+      }
+    });
+
     res.status(200).send({ message: "Photos deleted" });
   });
 
