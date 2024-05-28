@@ -6,7 +6,7 @@ const authRoute = require("./routes/auth");
 const getRoute = require("./routes/get");
 const addRoute = require("./routes/add");
 const removeRoute = require("./routes/remove");
-const changeRoute = require("./routes/change");
+const swapRoute = require("./routes/swap");
 
 const app = express();
 const port = 3001;
@@ -38,7 +38,7 @@ app.use("/api/photos/get", getRoute);
 app.use("/api/auth", authRoute);
 app.use("/api/photos/add", addRoute);
 app.use("/api/photos/remove", removeRoute);
-app.use("/api/photos/change", changeRoute);
+app.use("/api/photos/swap", swapRoute);
 
 app.listen(port, () => {
   console.log(`App running on http://localhost:${port}`);
