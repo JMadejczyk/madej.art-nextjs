@@ -16,9 +16,7 @@ router.get("/", (req, res) => {
   );
 
   let data = req.query.tags.split(",");
-  console.log(data);
-
-  // let keyword = req.query.keyword;
+  // console.log(data);
 
   let placeholders = data.map(() => "?").join(",");
   let sql = `SELECT * FROM photos join tags_photos on photos.photo_id = tags_photos.photo_id join tags on tags.tag_id = tags_photos.tag_id WHERE tags.name in (${placeholders})`;

@@ -40,3 +40,70 @@ router.post("/drop", (req, res) => {
 module.exports = router;
 
 ////////////////////////////////////////////////////////////////
+
+router.use((req, res, next) => {
+  let db = new sqlite3.Database(
+    "./backend/database/portfolio.db",
+    sqlite3.OPEN_READONLY,
+    (err) => {
+      if (err) {
+        console.error(err.message);
+      }
+    }
+  );
+  const data = req.body;
+  console.log(req.body);
+  const photoIds = data.photos.map((photo) => photo.photo_id);
+
+  const placeholders = photoIds.map(() => "?").join(",");
+  let sql = `SELECT photo_id FROM photos WHERE photo_id IN (${placeholders})`;
+
+  db.all(sql, photoIds, (err, rows) => {
+    if (err) {
+      throw err;
+    }
+
+    if (rows.length === photoIds.length) {
+      next();
+    } else {
+      let present = rows.map((row) => row.photo_id);
+      let answer = photoIds.filter((photo) => !present.includes(photo));
+
+      res.status(409).send({ message: `Photo ${answer} is not in database` });
+    }
+  });
+});
+
+////////////////////////////////////////////////////////////////
+
+router.post("/", (req, res) => {
+  const data = req.body;
+  const photos = data.photos;
+  let db = new sqlite3.Database(
+    "./backend/database/portfolio.db",
+    sqlite3.OPEN_READWRITE,
+    (err) => {
+      if (err) {
+        console.error(err.message);
+      }
+      photos.forEach((photo) => {
+        const { photo_id } = photo;
+        let sql = `delete from photos where photo_id = ?`;
+        let sql2 = `delete from tags_photos where photo_id = ?`;
+
+        db.run(sql, photo_id, (err) => {
+          if (err) {
+            throw err;
+          }
+        });
+
+        db.run(sql2, photo_id, (err) => {
+          if (err) {
+            throw err;
+          }
+        });
+      });
+      res.status(200).send({ message: "Photos removed" });
+    }
+  );
+});
