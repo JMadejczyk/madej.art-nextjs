@@ -10,26 +10,37 @@ import { motion, AnimatePresence } from "framer-motion";
 
 interface FetchPhotosConfig {
   photos: {
-    name: string;
+    photo_id: number;
+    file_name: string;
     width: number;
     height: number;
-    desc: string;
-    blured: string;
+    description: string;
+    blurred: string;
+    localization: string;
+    position: number;
   }[];
 }
 
 function Modal(props: { photos_json: FetchPhotosConfig }) {
   const searchParams = useSearchParams();
   const modal = searchParams.get("modal");
-  const folder = searchParams.get("folder");
-  const name = searchParams.get("name");
+  const file_name = searchParams.get("file_name");
   const pathname = usePathname();
-  const photoObj = props.photos_json.photos.find((el) => el.name === name);
+
+  const photoObj = props.photos_json.photos.find(
+    (el) => el.file_name === file_name
+  );
+
   const currPhotoId = props.photos_json.photos.findIndex(
     (el) => el === photoObj
   );
-  const nextPhotoName = props.photos_json.photos[currPhotoId + 1]?.name;
-  const prevPhotoName = props.photos_json.photos[currPhotoId - 1]?.name;
+
+  const nextPhotoName = props.photos_json.photos[currPhotoId + 1]?.file_name;
+  const prevPhotoName = props.photos_json.photos[currPhotoId - 1]?.file_name;
+  const nextPhotoFolder =
+    props.photos_json.photos[currPhotoId + 1]?.localization;
+  const prevPhotoFolder =
+    props.photos_json.photos[currPhotoId - 1]?.localization;
 
   const [isNext, setIsNext] = useState(true);
 
@@ -40,10 +51,12 @@ function Modal(props: { photos_json: FetchPhotosConfig }) {
   // console.log("Modal has been rerendered!");
 
   const handleNextPhoto = (cooldownDuration: number = 0) => {
+    // currentPhotoFolder = nextPhotoFolder;
     const doRouting = () => {
       router.push(
-        nextPhotoName && folder
-          ? pathname + `?modal=true&folder=${folder}&name=${nextPhotoName}`
+        nextPhotoName
+          ? pathname +
+              `?modal=true&folder=/${nextPhotoFolder}&file_name=${nextPhotoName}`
           : pathname,
         { scroll: false }
       );
@@ -64,8 +77,9 @@ function Modal(props: { photos_json: FetchPhotosConfig }) {
   const handlePrevPhoto = (cooldownDuration: number = 0) => {
     const doRouting = () => {
       router.push(
-        prevPhotoName && folder
-          ? pathname + `?modal=true&folder=${folder}&name=${prevPhotoName}`
+        prevPhotoName
+          ? pathname +
+              `?modal=true&folder=/${prevPhotoFolder}&file_name=${prevPhotoName}`
           : pathname,
         { scroll: false }
       );
@@ -95,15 +109,7 @@ function Modal(props: { photos_json: FetchPhotosConfig }) {
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    modal,
-    pathname,
-    searchParams,
-    folder,
-    name,
-    nextPhotoName,
-    prevPhotoName,
-  ]);
+  }, [modal, pathname, searchParams, file_name, nextPhotoName, prevPhotoName]);
 
   return (
     <>
@@ -158,7 +164,7 @@ function Modal(props: { photos_json: FetchPhotosConfig }) {
                         opacity: 0,
                       }}
                       transition={{ duration: 0.125 }}
-                      key={photoObj.name}
+                      key={photoObj.file_name}
                     >
                       <div
                         className="absolute left-0 h-full w-[50%] text-transparent hover:text-[#707070]"
@@ -168,16 +174,16 @@ function Modal(props: { photos_json: FetchPhotosConfig }) {
                       </div>
 
                       <Image
-                        src={`${folder}/${photoObj.name}`}
+                        src={`/${photoObj.localization}/${photoObj.file_name}`}
                         height={photoObj.height}
                         width={photoObj.width}
-                        alt={photoObj.desc}
+                        alt={photoObj.description}
                         placeholder="blur"
-                        blurDataURL={photoObj.blured}
+                        blurDataURL={photoObj.blurred}
                         priority={true}
                         className="max-h-[80vh] w-auto"
                         quality={90}
-                        key={"image" + photoObj.name}
+                        key={"image" + photoObj.file_name}
                       />
 
                       <div

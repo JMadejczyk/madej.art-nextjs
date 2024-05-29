@@ -1,17 +1,21 @@
 "use client";
 
 import Header from "@/app/ui/header";
-import Photos_layout from "../../ui/photos";
-import Modal from "@/app/ui/modal";
-import { Suspense, useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
+import Loading from "../../loading";
+const PhotosLayout = React.lazy(() => import("../../ui/photos"));
+const Modal = React.lazy(() => import("../../ui/modal"));
 
 interface FetchPhotosConfig {
   photos: {
-    name: string;
+    photo_id: number;
+    file_name: string;
     width: number;
     height: number;
-    desc: string;
-    blured: string;
+    description: string;
+    blurred: string;
+    localization: string;
+    position: number;
   }[];
 }
 
@@ -19,21 +23,23 @@ export default function Home() {
   const [images, setImages] = useState<FetchPhotosConfig>({ photos: [] });
 
   useEffect(() => {
-    fetch("/data/landscapes.json").then((res: Response) => {
-      if (res.ok) {
-        res.json().then((res) => {
-          setImages(res);
-        });
+    fetch("http://localhost:3001/api/photos/get?tags=landscapes").then(
+      (res: Response) => {
+        if (res.ok) {
+          res.json().then((res) => {
+            setImages(res);
+          });
+        }
       }
-    });
+    );
   }, []);
 
   return (
     <main className="min-h-screen h-auto bg-light-gray bg-[url('/img/noise_transparent.png')]">
-      <Suspense>
-        <Photos_layout photos_folder={"/landscapes"} photos_json={images} />
+      <Suspense fallback={<Loading />}>
+        <PhotosLayout photos_json={images} />
       </Suspense>
-      <Suspense>
+      <Suspense fallback={<Loading />}>
         <Modal photos_json={images} />
       </Suspense>
     </main>
