@@ -4,6 +4,15 @@ const sqlite3 = require("sqlite3").verbose();
 
 const router = Router();
 
+// router.use((req, res, next) => {
+//   if (req.session.authenticated) {
+//     next();
+//   } else {
+//     res.status(401).send({ message: "Unauthorized" });
+//     // res.status(401).send(req.session);
+//   }
+// });
+
 router.get("/", (req, res) => {
   let db = new sqlite3.Database(
     "./backend/database/portfolio.db",
@@ -34,14 +43,5 @@ router.get("/", (req, res) => {
     }
   });
 });
-
-// router.use((req, res, next) => {
-//   if (req.session.authenticated) {
-//     next();
-//   } else {
-//     // res.status(401).send({ message: "Unauthorized" });
-//     res.status(401).send(req.session);
-//   }
-// });
 
 module.exports = router;

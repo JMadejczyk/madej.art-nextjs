@@ -38,7 +38,7 @@ export default function Home() {
   return (
     <main className="min-h-screen h-auto bg-light-gray bg-[url('/img/noise_transparent.png')]">
       <Suspense fallback={<Loading />}>
-        <PhotosLayout photos_folder={"/street"} photos_json={images} />
+        <PhotosLayout photos_json={images} />
       </Suspense>
       <Suspense fallback={<Loading />}>
         <Modal photos_json={images} />

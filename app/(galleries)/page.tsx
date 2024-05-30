@@ -26,17 +26,18 @@ export default function Home() {
   const [images, setImages] = useState<FetchPhotosConfig>({ photos: [] });
 
   useEffect(() => {
-    fetch("http://localhost:3001/api/photos/get?tags=portraits").then(
-      (res: Response) => {
-        if (res.ok) {
-          res.json().then((res) => {
-            // console.log("Res: " + res);
-            // console.log(res[0]);
-            setImages(res);
-          });
-        }
+    fetch("http://localhost:3001/api/photos/get?tags=portraits", {
+      method: "GET",
+      credentials: "include",
+    }).then((res: Response) => {
+      if (res.ok) {
+        res.json().then((res) => {
+          // console.log("Res: " + res);
+          // console.log(res[0]);
+          setImages(res);
+        });
       }
-    );
+    });
   }, []);
 
   // console.log(images.photos.length);
