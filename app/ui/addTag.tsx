@@ -2,10 +2,9 @@ import { useRef, useState } from "react";
 
 const AddTag = () => {
   const [info, setInfo] = useState("");
+  const tagElement = document.querySelector("#tag-name") as HTMLInputElement;
 
   const handleAddTag = () => {
-    const tagElement = document.querySelector("#tag-name") as HTMLInputElement;
-
     const tagName = tagElement.value;
     console.log(tagName);
 
@@ -28,11 +27,9 @@ const AddTag = () => {
   };
 
   const handleRemoveTag = () => {
-    // const tagName = document.querySelector("input").value;
-    const tagElement = document.querySelector("#tag-name") as HTMLInputElement;
-
     const tagName = tagElement.value;
     console.log(tagName);
+
     fetch("http://localhost:3001/api/photos/remove/tag", {
       method: "POST",
       credentials: "include",

@@ -5,13 +5,13 @@ import AddPhoto from "../../../ui/addPhoto";
 import AddTag from "../../../ui/addTag";
 
 const Add = () => {
-  const [choice, setChoice] = useState("");
+  const [choice, setChoice] = useState("photo");
   return (
     // {choice === "photo" && <AddPhoto />}
     // {choice === "tag" && <AddTag />}
 
     <div className="min-h-screen h-auto  bg-light-gray bg-[url('/img/noise_transparent.png')] bg-fixed">
-      <div className="h-full w-full p-16 gap-16 flex justify-around items-center flex-col">
+      <div className="h-full w-full p-16 gap-10 flex items-center flex-col">
         <h1>Wybierz co chcesz dodać:</h1>
         <div className="flex gap-6">
           <button
