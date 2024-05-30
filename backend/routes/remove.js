@@ -41,6 +41,55 @@ module.exports = router;
 
 ////////////////////////////////////////////////////////////////
 
+router.post("/tag", (req, res) => {
+  let db = new sqlite3.Database(
+    "./backend/database/portfolio.db",
+    sqlite3.OPEN_READWRITE,
+    (err) => {
+      if (err) {
+        console.error(err.message);
+      }
+    }
+  );
+
+  const data = req.body;
+  const tag = data.name;
+  let sql = "select * from tags where name = ?";
+  db.get(sql, [tag], (err, row) => {
+    if (err) {
+      throw err;
+    }
+    if (!row) {
+      res.status(409).send({ message: "Tag " + tag + " does not exist!" });
+    } else {
+      let sql2 = "delete from tags where name = ?";
+      let sql3 =
+        "delete from tags_photos where tag_id = (select tag_id from tags where name = ?)";
+
+      db.run(sql2, [tag], (err) => {
+        if (err) {
+          throw err;
+        }
+        db.run(sql3, [tag], (err) => {
+          if (err) {
+            throw err;
+          }
+        });
+      });
+
+      res.status(200).send({ message: "Tag " + tag + " removed succesfully!" });
+
+      db.close((err) => {
+        if (err) {
+          console.error(err.message);
+        }
+      });
+    }
+  });
+});
+
+////////////////////////////////////////////////////////////////
+
 router.use((req, res, next) => {
   let db = new sqlite3.Database(
     "./backend/database/portfolio.db",

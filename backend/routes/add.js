@@ -17,7 +17,6 @@ router.post("/check", (req, res) => {
   const photoIds = data.photos.map((photo) => photo.photo_id);
   console.log("PhotoIDS: " + photoIds);
 
-  // Stwórz ciąg znaków zapytania dla każdego elementu w photoIds
   const placeholders = photoIds.map(() => "?").join(",");
   let sql = `SELECT * FROM photos WHERE photo_id IN (${placeholders})`;
 
@@ -27,6 +26,46 @@ router.post("/check", (req, res) => {
     }
 
     res.status(200).send(rows);
+  });
+  db.close((err) => {
+    if (err) {
+      console.error(err.message);
+    }
+  });
+});
+
+////////////////////////////////////////////////////////////////
+
+router.post("/tag", (req, res) => {
+  let db = new sqlite3.Database(
+    "./backend/database/portfolio.db",
+    sqlite3.OPEN_READWRITE,
+    (err) => {
+      if (err) {
+        console.error(err.message);
+      }
+    }
+  );
+
+  const data = req.body;
+  const tag = data.name;
+
+  let sql = "select * from tags where name = ?";
+  db.get(sql, [tag], (err, row) => {
+    if (err) {
+      throw err;
+    }
+    if (row) {
+      res.status(409).send({ message: "Tag " + tag + " already exists!" });
+    } else {
+      let sql2 = "INSERT INTO tags (name) VALUES (?)";
+      db.run(sql2, [tag], (err) => {
+        if (err) {
+          throw err;
+        }
+      });
+      res.status(200).send({ message: "Tag " + tag + " added succesfully!" });
+    }
   });
   db.close((err) => {
     if (err) {
@@ -270,5 +309,4 @@ router.post("/bottom", (req, res) => {
 });
 
 ////////////////////////////////////////////////////////////////
-
 module.exports = router;
