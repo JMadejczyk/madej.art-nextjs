@@ -96,6 +96,8 @@ router.post("/tag", (req, res) => {
 ////////////////////////////////////////////////////////////////
 
 router.post("/top", upload.array("images"), async (req, res) => {
+  console.log(req.body);
+  console.log(req.files);
   if (req.files.length > 1) {
     for (const [index, file] of req.files.entries()) {
       file.description = req.body.descriptions[index];
@@ -219,7 +221,131 @@ router.post("/top", upload.array("images"), async (req, res) => {
 
 ////////////////////////////////////////////////////////////////
 
-router.post("/bottom", (req, res) => {
+// router.post("/bottom", (req, res) => {
+//   let db = new sqlite3.Database(
+//     "./backend/database/portfolio.db",
+//     sqlite3.OPEN_READWRITE,
+//     (err) => {
+//       if (err) {
+//         console.error(err.message);
+//       }
+//     }
+//   );
+
+//   let sql = `select max(position) as max from photos;`;
+
+//   const data = req.body;
+//   photos = data.photos;
+
+//   let max_position = 1;
+//   db.get(sql, (err, row) => {
+//     if (err) {
+//       throw err;
+//     }
+//     if (row) {
+//       max_position = row["max"];
+//     }
+//     console.log("Max position: " + max_position + "row(max): " + row["max"]);
+
+//     let sql2 = `INSERT INTO photos
+//             (photo_id, file_name, width, height, description, blurred, localization, position)
+//             VALUES (?, ?, ?, ?, ?, ?, ?, ?);`;
+
+//     photos.forEach((photo) => {
+//       let {
+//         photo_id,
+//         file_name,
+//         width,
+//         height,
+//         description,
+//         blurred,
+//         localization,
+//         position,
+//       } = photo;
+//       position += max_position;
+//       console.log("Max position: " + max_position);
+
+//       console.log("Position: " + position);
+
+//       db.run(
+//         sql2,
+//         [
+//           photo_id,
+//           file_name,
+//           width,
+//           height,
+//           description,
+//           blurred,
+//           localization,
+//           position,
+//         ],
+//         (err) => {
+//           if (err) {
+//             throw err;
+//           }
+//         }
+//       );
+//     });
+
+//     res.status(200).send({ message: "Photos added" });
+
+//     db.close((err) => {
+//       if (err) {
+//         console.error(err.message);
+//       }
+//     });
+//   });
+// });
+
+////////////////////////////////////////////////////////////////
+
+router.post("/bottom", upload.array("images"), async (req, res) => {
+  if (req.files.length > 1) {
+    for (const [index, file] of req.files.entries()) {
+      file.description = req.body.descriptions[index];
+      file.tags = req.body.tags[index];
+      const image = sharp(file.path);
+      const metadata = await image.metadata();
+      let x = metadata.width;
+      let y = metadata.height;
+      file.width = x;
+      file.height = y;
+      while (x > 20 || y > 20) {
+        x = x / 2;
+        y = y / 2;
+      }
+      x = Math.round(x);
+      y = Math.round(y);
+      const resizedImageBuffer = await image.resize(x, y).toBuffer();
+      const base64Image = resizedImageBuffer.toString("base64");
+      file.base64 = base64Image;
+      file.position = index + 1;
+    }
+  } else {
+    req.files[0].description = req.body.descriptions;
+    req.files[0].tags = req.body.tags;
+    const image = sharp(req.files[0].path);
+    const metadata = await image.metadata();
+    let x = metadata.width;
+    let y = metadata.height;
+    req.files[0].width = x;
+    req.files[0].height = y;
+    while (x > 20 || y > 20) {
+      x = x / 2;
+      y = y / 2;
+    }
+    x = Math.round(x);
+    y = Math.round(y);
+    const resizedImageBuffer = await image.resize(x, y).toBuffer();
+    const base64Image = resizedImageBuffer.toString("base64");
+    req.files[0].base64 = base64Image;
+    req.files[0].position = 1;
+  }
+
+  photos = req.files;
+
+  console.log(photos);
+
   let db = new sqlite3.Database(
     "./backend/database/portfolio.db",
     sqlite3.OPEN_READWRITE,
@@ -230,12 +356,9 @@ router.post("/bottom", (req, res) => {
     }
   );
 
+  let max_position = 1;
   let sql = `select max(position) as max from photos;`;
 
-  const data = req.body;
-  photos = data.photos;
-
-  let max_position = 1;
   db.get(sql, (err, row) => {
     if (err) {
       throw err;
@@ -243,57 +366,62 @@ router.post("/bottom", (req, res) => {
     if (row) {
       max_position = row["max"];
     }
-    console.log("Max position: " + max_position + "row(max): " + row["max"]);
+  });
 
-    let sql2 = `INSERT INTO photos
-            (photo_id, file_name, width, height, description, blurred, localization, position)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?);`;
+  try {
+    const arePhotos = await arePhotosInDb(db, photos);
+    console.log(arePhotos);
+    if (arePhotos === false) {
+      let sql4 = `INSERT INTO photos
+            (file_name, width, height, description, blurred, localization, position)
+            VALUES (?, ?, ?, ?, ?, ?, ?);`;
 
-    photos.forEach((photo) => {
-      let {
-        photo_id,
-        file_name,
-        width,
-        height,
-        description,
-        blurred,
-        localization,
-        position,
-      } = photo;
-      position += max_position;
-      console.log("Max position: " + max_position);
-
-      console.log("Position: " + position);
-
-      db.run(
-        sql2,
-        [
-          photo_id,
-          file_name,
+      photos.forEach((photo) => {
+        let {
+          filename: file_name,
           width,
           height,
           description,
-          blurred,
-          localization,
+          base64: blurred,
           position,
-        ],
-        (err) => {
-          if (err) {
-            throw err;
+        } = photo;
+        position += max_position;
+        db.run(
+          sql4,
+          [
+            file_name,
+            width,
+            height,
+            description,
+            blurred,
+            (localization = "images"),
+            position,
+          ],
+          (err) => {
+            if (err) {
+              throw err;
+            }
           }
-        }
-      );
-    });
+        );
+      });
+      addTags(db, photos);
+      res.status(200).send({ message: "Photos added" });
+    } else {
+      res
+        .status(409)
+        .send({ message: `Photo ${arePhotos} is already in database` });
+    }
+  } catch (err) {
+    console.error(err);
+  }
 
-    res.status(200).send({ message: "Photos added" });
-
-    db.close((err) => {
-      if (err) {
-        console.error(err.message);
-      }
-    });
+  db.close((err) => {
+    if (err) {
+      console.error(err.message);
+    }
   });
 });
 
 ////////////////////////////////////////////////////////////////
+
 module.exports = router;
