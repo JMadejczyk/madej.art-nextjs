@@ -17,7 +17,7 @@ const port = 3001;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(express.json());
-// app.use(express.urlencoded());
+// app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 const cors = require("cors");
@@ -50,7 +50,7 @@ app.use("/api/login", loginRoute);
 app.use("/api/auth", authRoute);
 app.use("/api/logout", logoutRoute);
 
-app.use(requireAuth);
+// app.use(requireAuth);
 app.use("/api/photos/add", addRoute);
 app.use("/api/photos/remove", removeRoute);
 app.use("/api/photos/swap", swapRoute);

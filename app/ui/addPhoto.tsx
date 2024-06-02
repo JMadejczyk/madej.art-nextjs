@@ -69,12 +69,15 @@ const AddPhoto = () => {
     const formData = new FormData();
 
     filesWithDescriptions.forEach((fileWithDescriptionAndTags, index) => {
-      formData.append(`images[${index}]`, fileWithDescriptionAndTags.file);
-      formData.append(
-        `descriptions[${index}]`,
-        fileWithDescriptionAndTags.description
-      );
-      formData.append(`tags[${index}]`, fileWithDescriptionAndTags.tags);
+      // formData.append(`images[${index}]`, fileWithDescriptionAndTags.file);
+      // formData.append(
+      //   `descriptions[${index}]`,
+      //   fileWithDescriptionAndTags.description
+      // );
+      // formData.append(`tags[${index}]`, fileWithDescriptionAndTags.tags);
+      formData.append(`images`, fileWithDescriptionAndTags.file);
+      formData.append(`descriptions`, fileWithDescriptionAndTags.description);
+      formData.append(`tags`, fileWithDescriptionAndTags.tags);
     });
 
     try {
@@ -82,9 +85,11 @@ const AddPhoto = () => {
         method: "POST",
         body: formData,
       });
+
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
+
       const data = await response.json();
       console.log(data);
       // console.log(formData.values());

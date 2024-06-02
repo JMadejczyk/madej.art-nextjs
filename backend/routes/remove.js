@@ -1,5 +1,6 @@
 const { Router } = require("express");
 const sqlite3 = require("sqlite3").verbose();
+const fs = require("fs");
 
 const router = Router();
 
@@ -137,19 +138,33 @@ router.post("/", (req, res) => {
       }
       photos.forEach((photo) => {
         const { photo_id } = photo;
-        let sql = `delete from photos where photo_id = ?`;
-        let sql2 = `delete from tags_photos where photo_id = ?`;
+        let sql = `select file_name from photos where photo_id = ?`;
+        let sql2 = `delete from photos where photo_id = ?`;
+        let sql3 = `delete from tags_photos where photo_id = ?`;
 
-        db.run(sql, photo_id, (err) => {
+        db.get(sql, photo_id, (err, row) => {
           if (err) {
             throw err;
           }
-        });
+          const photo = row.file_name;
+          const path = `./public/images/${photo}`;
+          fs.unlink(path, (err) => {
+            if (err) {
+              console.error(err.message);
+            }
+          });
 
-        db.run(sql2, photo_id, (err) => {
-          if (err) {
-            throw err;
-          }
+          db.run(sql2, photo_id, (err) => {
+            if (err) {
+              throw err;
+            }
+          });
+
+          db.run(sql3, photo_id, (err) => {
+            if (err) {
+              throw err;
+            }
+          });
         });
       });
       res.status(200).send({ message: "Photos removed" });
