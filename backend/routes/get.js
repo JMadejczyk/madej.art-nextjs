@@ -28,7 +28,7 @@ router.get("/", (req, res) => {
   // console.log(data);
 
   let placeholders = data.map(() => "?").join(",");
-  let sql = `SELECT * FROM photos join tags_photos on photos.photo_id = tags_photos.photo_id join tags on tags.tag_id = tags_photos.tag_id WHERE tags.name in (${placeholders})`;
+  let sql = `SELECT * FROM photos join tags_photos on photos.photo_id = tags_photos.photo_id join tags on tags.tag_id = tags_photos.tag_id WHERE tags.name in (${placeholders}) order by photos.position asc;`;
 
   db.all(sql, data, (err, rows) => {
     if (err) {

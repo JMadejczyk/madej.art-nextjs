@@ -64,27 +64,25 @@ const AddPhoto = () => {
   }, [selectedImage]);
 
   const uploadImages = async (
-    filesWithDescriptions: fileWithDescriptionAndTags[]
+    filesWithDescriptions: fileWithDescriptionAndTags[],
+    option: "top" | "bottom"
   ) => {
     const formData = new FormData();
 
     filesWithDescriptions.forEach((fileWithDescriptionAndTags, index) => {
-      // formData.append(`images[${index}]`, fileWithDescriptionAndTags.file);
-      // formData.append(
-      //   `descriptions[${index}]`,
-      //   fileWithDescriptionAndTags.description
-      // );
-      // formData.append(`tags[${index}]`, fileWithDescriptionAndTags.tags);
       formData.append(`images`, fileWithDescriptionAndTags.file);
       formData.append(`descriptions`, fileWithDescriptionAndTags.description);
       formData.append(`tags`, fileWithDescriptionAndTags.tags);
     });
 
     try {
-      const response = await fetch("http://localhost:3001/api/photos/add/top", {
-        method: "POST",
-        body: formData,
-      });
+      const response = await fetch(
+        `http://localhost:3001/api/photos/add/${option}`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -92,10 +90,6 @@ const AddPhoto = () => {
 
       const data = await response.json();
       console.log(data);
-      // console.log(formData.values());
-      // for (let pair of formData.entries()) {
-      //   console.log(pair[0] + ", " + pair[1]);
-      // }
     } catch (error) {
       console.error(
         "There has been a problem with your fetch operation: ",
@@ -107,7 +101,11 @@ const AddPhoto = () => {
   return (
     <div className="flex justify-center pb-16">
       <div className=" bg-[#404040] mr-28 ml-28 p-16 pl-20 pr-20 rounded-xl bg-[url('/img/noise_transparent.png')] bg-fixed w-fit">
-        <div className="flex flex-col gap-4 items-center">
+        <div
+          className={`flex flex-col ${
+            filesWithDescriptions.length > 0 ? "gap-4" : ""
+          } items-center`}
+        >
           <button
             onClick={handleFileButtonClick}
             className="bg-dark-gray hover:bg-[#404040] hover:scale-105 p-5 rounded-xl border border-[#909090] shadow-custom_shadow"
@@ -169,13 +167,27 @@ const AddPhoto = () => {
               </div>
             </div>
           )}
-          <button
-            className="bg-dark-gray w-28 hover:bg-[#404040] hover:scale-105 p-5 rounded-xl border border-[#909090] shadow-custom_shadow"
-            // onClick={() => console.log(filesWithDescriptions)}
-            onClick={() => uploadImages(filesWithDescriptions)}
-          >
-            Dodaj
-          </button>
+
+          <div className="flex gap-8 mt-4">
+            {filesWithDescriptions.length > 0 && (
+              <>
+                <button
+                  className="bg-dark-gray w-40 hover:bg-[#404040] hover:scale-105 p-5 rounded-xl border border-[#909090] shadow-custom_shadow"
+                  // onClick={() => console.log(filesWithDescriptions)}
+                  onClick={() => uploadImages(filesWithDescriptions, "top")}
+                >
+                  Dodaj od góry
+                </button>
+                <button
+                  className="bg-dark-gray w-40 hover:bg-[#404040] hover:scale-105 p-5 rounded-xl border border-[#909090] shadow-custom_shadow"
+                  // onClick={() => console.log(filesWithDescriptions)}
+                  onClick={() => uploadImages(filesWithDescriptions, "bottom")}
+                >
+                  Dodaj od dołu
+                </button>
+              </>
+            )}
+          </div>
         </div>
       </div>
     </div>
