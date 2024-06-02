@@ -91,7 +91,15 @@ router.post("/tag", (req, res) => {
 
 ////////////////////////////////////////////////////////////////
 
-// router.use((req, res, next) => {
+// router.use(upload.array("images"), async (err, req, res, next) => {
+//   // for (const [index, file] of req.files.entries()) {
+//   //   let dupa = req.body.descriptions[index];
+//   //   let dupa2 = req.body.tags[index];
+//   //   console.log(dupa);
+//   //   console.log(dupa2);
+//   // }
+//   console.log(req.files);
+
 //   let db = new sqlite3.Database(
 //     "./backend/database/portfolio.db",
 //     sqlite3.OPEN_READONLY,
@@ -101,21 +109,23 @@ router.post("/tag", (req, res) => {
 //       }
 //     }
 //   );
-//   const data = req.body;
-//   const photoIds = data.photos.map((photo) => photo.photo_id);
+//   // const data = req.body;
+//   // const photoIds = data.photos.map((photo) => photo.photo_id);
+//   const photoFileNames = req.files.map((photo) => photo.filename);
 
-//   const placeholders = photoIds.map(() => "?").join(",");
-//   let sql = `SELECT photo_id FROM photos WHERE photo_id IN (${placeholders})`;
+//   const placeholders = photoFileNames.map(() => "?").join(",");
+//   let sql = `SELECT file_name FROM photos WHERE file_name IN (${placeholders})`;
 
-//   db.all(sql, photoIds, (err, rows) => {
+//   db.all(sql, photoFileNames, (err, rows) => {
 //     if (err) {
 //       throw err;
 //     }
 
 //     if (rows.length === 0) {
 //       next();
+//       // res.status(200).send({ message: "Photos added" });
 //     } else {
-//       let answer = rows.map((row) => row.photo_id);
+//       let answer = rows.map((row) => row.file_name);
 
 //       res
 //         .status(409)
@@ -125,7 +135,39 @@ router.post("/tag", (req, res) => {
 // });
 
 ////////////////////////////////////////////////////////////////
-
+const addTags = (db, photos) => {
+  photos.forEach((photo) => {
+    let { filename, tags } = photo;
+    // console.log("filename: " + filename);
+    // console.log("tags: " + tags);
+    tags = tags.replace(/\s/g, "");
+    tags = tags.split(",");
+    tags.forEach((tag) => {
+      let sql = `select tag_id from tags where name = ?`;
+      db.get(sql, [tag], (err, row) => {
+        if (err) {
+          throw err;
+        }
+        if (row) {
+          let sql2 = `select * from tags_photos where tag_id = ? and photo_id = (select photo_id from photos where file_name = ?)`;
+          db.get(sql2, [row["tag_id"], filename], (err, row2) => {
+            if (err) {
+              throw err;
+            }
+            if (!row2) {
+              let sql3 = `INSERT INTO tags_photos (photo_id, tag_id) VALUES ((select photo_id from photos where file_name = ?), ?)`;
+              db.run(sql3, [filename, row["tag_id"]], (err) => {
+                if (err) {
+                  throw err;
+                }
+              });
+            }
+          });
+        }
+      });
+    });
+  });
+};
 // router.use((req, res, next) => {
 //   let db = new sqlite3.Database(
 //     "./backend/database/portfolio.db",
@@ -193,11 +235,8 @@ router.post("/top", upload.array("images"), async (req, res) => {
     file.base64 = base64Image;
     file.position = index + 1;
   }
+  photos = req.files;
 
-  // console.log(req.files);
-
-  // res.status(200).send({ message: "Photos added" });
-  //
   let db = new sqlite3.Database(
     "./backend/database/portfolio.db",
     sqlite3.OPEN_READWRITE,
@@ -207,53 +246,71 @@ router.post("/top", upload.array("images"), async (req, res) => {
       }
     }
   );
-  let sql = `UPDATE photos set position = (position + ?) * -1;`;
-  // const data = req.body;
-  photos = req.files;
+  const photoFileNames = photos.map((photo) => photo.filename);
+  const placeholders = photoFileNames.map(() => "?").join(",");
 
-  let sql3 = `UPDATE photos set position = position * -1;`;
-  db.run(sql, [photos.length], (err) => {
+  let sql = `SELECT file_name FROM photos WHERE file_name IN (${placeholders})`;
+  db.all(sql, photoFileNames, (err, rows) => {
     if (err) {
       throw err;
     }
-    db.run(sql3, (err) => {
-      if (err) {
-        throw err;
-      }
-      let sql2 = `INSERT INTO photos
-      (file_name, width, height, description, blurred, localization, position)
-      VALUES (?, ?, ?, ?, ?, ?, ?);`;
-      photos.forEach((photo) => {
-        const {
-          // photo_id,
-          filename: file_name,
-          width,
-          height,
-          description,
-          base64: blurred,
-          position,
-        } = photo;
-        db.run(
-          sql2,
-          [
-            // photo_id,
-            file_name,
-            width,
-            height,
-            description,
-            blurred,
-            (localization = "images"),
-            position,
-          ],
-          (err) => {
-            if (err) {
-              throw err;
-            }
+
+    if (rows.length === 0) {
+      let sql2 = `UPDATE photos set position = (position + ?) * -1;`;
+      db.run(sql2, [photos.length], (err) => {
+        if (err) {
+          throw err;
+        }
+
+        let sql3 = `UPDATE photos set position = position * -1;`;
+        db.run(sql3, (err) => {
+          if (err) {
+            throw err;
           }
-        );
+
+          let sql4 = `INSERT INTO photos
+          (file_name, width, height, description, blurred, localization, position)
+          VALUES (?, ?, ?, ?, ?, ?, ?);`;
+          photos.forEach((photo) => {
+            const {
+              // photo_id,
+              filename: file_name,
+              width,
+              height,
+              description,
+              base64: blurred,
+              position,
+            } = photo;
+            db.run(
+              sql4,
+              [
+                // photo_id,
+                file_name,
+                width,
+                height,
+                description,
+                blurred,
+                (localization = "images"),
+                position,
+              ],
+              (err) => {
+                if (err) {
+                  throw err;
+                }
+              }
+            );
+          });
+        });
+        addTags(db, photos);
+        res.status(200).send({ message: "Photos added" });
       });
-    });
-    res.status(200).send({ message: "Photos added" });
+    } else {
+      let answer = rows.map((row) => row.file_name);
+
+      res
+        .status(409)
+        .send({ message: `Photo ${answer} is already in database` });
+    }
     db.close((err) => {
       if (err) {
         console.error(err.message);
