@@ -2,12 +2,8 @@ const { Router } = require("express");
 const sqlite3 = require("sqlite3").verbose();
 const multer = require("multer");
 const sharp = require("sharp");
-// arePhotosInDb
-// addTags
 const arePhotosInDb = require("../lib/addFunctions").arePhotosInDb;
 const addTags = require("../lib/addFunctions").addTags;
-
-// const upload = multer({ dest: "./public/images" });
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -218,84 +214,6 @@ router.post("/top", upload.array("images"), async (req, res) => {
     }
   });
 });
-
-////////////////////////////////////////////////////////////////
-
-// router.post("/bottom", (req, res) => {
-//   let db = new sqlite3.Database(
-//     "./backend/database/portfolio.db",
-//     sqlite3.OPEN_READWRITE,
-//     (err) => {
-//       if (err) {
-//         console.error(err.message);
-//       }
-//     }
-//   );
-
-//   let sql = `select max(position) as max from photos;`;
-
-//   const data = req.body;
-//   photos = data.photos;
-
-//   let max_position = 1;
-//   db.get(sql, (err, row) => {
-//     if (err) {
-//       throw err;
-//     }
-//     if (row) {
-//       max_position = row["max"];
-//     }
-//     console.log("Max position: " + max_position + "row(max): " + row["max"]);
-
-//     let sql2 = `INSERT INTO photos
-//             (photo_id, file_name, width, height, description, blurred, localization, position)
-//             VALUES (?, ?, ?, ?, ?, ?, ?, ?);`;
-
-//     photos.forEach((photo) => {
-//       let {
-//         photo_id,
-//         file_name,
-//         width,
-//         height,
-//         description,
-//         blurred,
-//         localization,
-//         position,
-//       } = photo;
-//       position += max_position;
-//       console.log("Max position: " + max_position);
-
-//       console.log("Position: " + position);
-
-//       db.run(
-//         sql2,
-//         [
-//           photo_id,
-//           file_name,
-//           width,
-//           height,
-//           description,
-//           blurred,
-//           localization,
-//           position,
-//         ],
-//         (err) => {
-//           if (err) {
-//             throw err;
-//           }
-//         }
-//       );
-//     });
-
-//     res.status(200).send({ message: "Photos added" });
-
-//     db.close((err) => {
-//       if (err) {
-//         console.error(err.message);
-//       }
-//     });
-//   });
-// });
 
 ////////////////////////////////////////////////////////////////
 
