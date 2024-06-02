@@ -1,16 +1,17 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 // import Image from "next/image";
 
-interface FileWithDescription {
+interface fileWithDescriptionAndTags {
   file: File;
   description: string;
+  tags: string;
 }
 
 const AddPhoto = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [filesWithDescriptions, setFilesWithDescriptions] = useState<
-    FileWithDescription[]
+    fileWithDescriptionAndTags[]
   >([]);
 
   const handleFileButtonClick = () => {
@@ -21,17 +22,27 @@ const AddPhoto = () => {
     if (e.target.files) {
       const files = Array.from(e.target.files);
       setFilesWithDescriptions(
-        files.map((file) => ({ file, description: "" }))
+        files.map((file) => ({ file, description: "", tags: "" }))
       );
     }
   };
 
   const handleDescriptionChange = (index: number, description: string) => {
     setFilesWithDescriptions((prev) =>
-      prev.map((fileWithDescription, i) =>
+      prev.map((fileWithDescriptionAndTags, i) =>
         i === index
-          ? { ...fileWithDescription, description }
-          : fileWithDescription
+          ? { ...fileWithDescriptionAndTags, description }
+          : fileWithDescriptionAndTags
+      )
+    );
+  };
+
+  const handleTagsChange = (index: number, tags: string) => {
+    setFilesWithDescriptions((prev) =>
+      prev.map((fileWithDescriptionAndTags, i) =>
+        i === index
+          ? { ...fileWithDescriptionAndTags, tags }
+          : fileWithDescriptionAndTags
       )
     );
   };
@@ -44,13 +55,57 @@ const AddPhoto = () => {
     setSelectedImage(null);
   };
 
+  useEffect(() => {
+    return () => {
+      if (selectedImage) {
+        URL.revokeObjectURL(selectedImage);
+      }
+    };
+  }, [selectedImage]);
+
+  const uploadImages = async (
+    filesWithDescriptions: fileWithDescriptionAndTags[]
+  ) => {
+    const formData = new FormData();
+
+    filesWithDescriptions.forEach((fileWithDescriptionAndTags, index) => {
+      formData.append(`images[${index}]`, fileWithDescriptionAndTags.file);
+      formData.append(
+        `descriptions[${index}]`,
+        fileWithDescriptionAndTags.description
+      );
+      formData.append(`tags[${index}]`, fileWithDescriptionAndTags.tags);
+    });
+
+    try {
+      const response = await fetch("http://localhost:3001/api/photos/add/top", {
+        method: "POST",
+        body: formData,
+      });
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      console.log(data);
+      // console.log(formData.values());
+      // for (let pair of formData.entries()) {
+      //   console.log(pair[0] + ", " + pair[1]);
+      // }
+    } catch (error) {
+      console.error(
+        "There has been a problem with your fetch operation: ",
+        error
+      );
+    }
+  };
+
   return (
-    <div className="flex justify-center">
+    <div className="flex justify-center pb-16">
       <div className=" bg-[#404040] mr-28 ml-28 p-16 pl-20 pr-20 rounded-xl bg-[url('/img/noise_transparent.png')] bg-fixed w-fit">
         <div className="flex flex-col gap-4 items-center">
           <button
             onClick={handleFileButtonClick}
-            className="bg-dark-gray hover:bg-[#404040] hover:scale-105 p-5 rounded-xl border border-[#909090]"
+            className="bg-dark-gray hover:bg-[#404040] hover:scale-105 p-5 rounded-xl border border-[#909090] shadow-custom_shadow"
           >
             Wybierz plik
           </button>
@@ -61,46 +116,58 @@ const AddPhoto = () => {
             multiple
             onChange={handleFileChange}
           />
-          {filesWithDescriptions.map((fileWithDescription, index) => (
-            <div key={index} className="flex items-center gap-4">
+          {filesWithDescriptions.map((fileWithDescriptionAndTags, index) => (
+            <div key={index + "zdj"} className="flex items-center gap-4">
               <img
-                src={URL.createObjectURL(fileWithDescription.file)}
-                alt={fileWithDescription.file.name}
-                className="w-20 h-20 object-cover rounded-xl"
-                onClick={() => handleImageClick(fileWithDescription.file)}
+                src={URL.createObjectURL(fileWithDescriptionAndTags.file)}
+                alt={fileWithDescriptionAndTags.file.name}
+                className="w-[3.33rem] h-20 object-cover rounded-xl hover:scale-105 shadow-custom_shadow cursor-pointer"
+                onClick={() =>
+                  handleImageClick(fileWithDescriptionAndTags.file)
+                }
               />
-              <div>
-                <p>{fileWithDescription.file.name}</p>
+              <div className="w-[60vw]">
+                <p>{fileWithDescriptionAndTags.file.name}</p>
                 <input
-                  className="w-[60vw] bg-dark-gray p-4 rounded-xl border border-[#909090]"
+                  className="w-full bg-dark-gray p-4 rounded-xl border border-[#909090] mb-2 shadow-custom_shadow"
                   type="text"
                   placeholder="Opis"
                   onBlur={(event) => {
                     handleDescriptionChange(index, event.target.value);
                   }}
                 />
+                <input
+                  className="w-full bg-dark-gray p-4 rounded-xl border border-[#909090] shadow-custom_shadow"
+                  type="text"
+                  placeholder="Tagi (oddzielone przecinkiem)"
+                  onBlur={(event) => {
+                    handleTagsChange(index, event.target.value);
+                  }}
+                />
               </div>
-              {selectedImage && (
-                <div
-                  className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-10"
-                  onClick={handleCloseModal}
-                >
-                  <div className="bg-white p-4 rounded-xl">
-                    <img
-                      src={selectedImage}
-                      alt="Wybrane zdjęcie"
-                      className="max-h-[90vh] max-w-[90vw] h-auto object-contain"
-                      onClick={(e) => e.stopPropagation()}
-                    />
-                    <button onClick={handleCloseModal}>Zamknij</button>
-                  </div>
-                </div>
-              )}
             </div>
           ))}
+
+          {selectedImage && (
+            <div
+              className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-10"
+              onClick={handleCloseModal}
+            >
+              <div className="bg-white p-4 rounded-xl">
+                <img
+                  src={selectedImage}
+                  alt="Wybrane zdjęcie"
+                  className="max-h-[90vh] max-w-[90vw] h-auto object-contain"
+                  onClick={(e) => e.stopPropagation()}
+                />
+                <button onClick={handleCloseModal}>Zamknij</button>
+              </div>
+            </div>
+          )}
           <button
-            className="bg-dark-gray w-28 hover:bg-[#404040] hover:scale-105 p-5 rounded-xl border border-[#909090]"
-            onClick={() => console.log(filesWithDescriptions)}
+            className="bg-dark-gray w-28 hover:bg-[#404040] hover:scale-105 p-5 rounded-xl border border-[#909090] shadow-custom_shadow"
+            // onClick={() => console.log(filesWithDescriptions)}
+            onClick={() => uploadImages(filesWithDescriptions)}
           >
             Dodaj
           </button>
