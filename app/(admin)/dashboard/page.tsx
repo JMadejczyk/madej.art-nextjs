@@ -2,8 +2,8 @@
 import { useState } from "react";
 // import UserContext, { UserProvider } from "../lib/userContext";
 // import AdminPanel from "../ui/adminPanel";
-import Login from "../../ui/login";
-import AdminPanel from "../../ui/adminPanel";
+import Login from "../../ui/admin/login";
+import AdminPanel from "../../ui/admin/adminPanel";
 
 export default function Admin() {
   const [haveAccess, setHaveAccess] = useState(false);

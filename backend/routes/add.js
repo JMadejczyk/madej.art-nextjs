@@ -111,7 +111,8 @@ router.post("/top", upload.array("images"), async (req, res) => {
       x = Math.round(x);
       y = Math.round(y);
       const resizedImageBuffer = await image.resize(x, y).toBuffer();
-      const base64Image = resizedImageBuffer.toString("base64");
+      let base64Image = resizedImageBuffer.toString("base64");
+      base64Image = "data:image/jpeg;base64," + base64Image;
       file.base64 = base64Image;
       file.position = index + 1;
     }
@@ -131,7 +132,8 @@ router.post("/top", upload.array("images"), async (req, res) => {
     x = Math.round(x);
     y = Math.round(y);
     const resizedImageBuffer = await image.resize(x, y).toBuffer();
-    const base64Image = resizedImageBuffer.toString("base64");
+    let base64Image = resizedImageBuffer.toString("base64");
+    base64Image = "data:image/jpeg;base64," + base64Image;
     req.files[0].base64 = base64Image;
     req.files[0].position = 1;
   }
@@ -235,7 +237,8 @@ router.post("/bottom", upload.array("images"), async (req, res) => {
       x = Math.round(x);
       y = Math.round(y);
       const resizedImageBuffer = await image.resize(x, y).toBuffer();
-      const base64Image = resizedImageBuffer.toString("base64");
+      let base64Image = resizedImageBuffer.toString("base64");
+      base64Image = "data:image/jpeg;base64," + base64Image;
       file.base64 = base64Image;
       file.position = index + 1;
     }
@@ -255,7 +258,8 @@ router.post("/bottom", upload.array("images"), async (req, res) => {
     x = Math.round(x);
     y = Math.round(y);
     const resizedImageBuffer = await image.resize(x, y).toBuffer();
-    const base64Image = resizedImageBuffer.toString("base64");
+    let base64Image = resizedImageBuffer.toString("base64");
+    base64Image = "data:image/jpeg;base64," + base64Image;
     req.files[0].base64 = base64Image;
     req.files[0].position = 1;
   }

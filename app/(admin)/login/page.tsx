@@ -2,7 +2,7 @@
 import { useState } from "react";
 // import UserContext, { UserProvider } from "../lib/userContext";
 // import AdminPanel from "../ui/adminPanel";
-import Login from "../../ui/login";
+import Login from "../../ui/admin/login";
 import { useRouter } from "next/navigation";
 
 export default function Admin() {
