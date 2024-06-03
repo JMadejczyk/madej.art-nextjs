@@ -2,72 +2,16 @@ import { useRef, useState } from "react";
 
 const AddTag = () => {
   const [info, setInfo] = useState("");
-  const tagElement = document.querySelector("#tag-name") as HTMLInputElement;
+  const ref = useRef<HTMLInputElement>(
+    null
+  ) as React.MutableRefObject<HTMLInputElement>;
+  // const tagElement = document.querySelector("#tag-name") as HTMLInputElement;
 
-  const handleAddTag = async () => {
-    const tagName = tagElement.value;
-    console.log(tagName);
-
-    // fetch("http://localhost:3001/api/photos/add/tag", {
-    //   method: "POST",
-    //   credentials: "include",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({ name: tagName }),
-    // })
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     setInfo(data.message);
-    //   })
-    //   .catch((error) => {
-    //     console.error(error);
-    //   });
-
-    try {
-      const response = await fetch("http://localhost:3001/api/photos/add/tag", {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name: tagName }),
-      });
-      const data = await response.json();
-      setInfo(data.message);
-
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      tagElement.value = "";
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const handleRemoveTag = async () => {
-    const tagName = tagElement.value;
-    console.log(tagName);
-
-    // fetch("http://localhost:3001/api/photos/remove/tag", {
-    //   method: "POST",
-    //   credentials: "include",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({ name: tagName }),
-    // })
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     setInfo(data.message);
-    //   })
-    //   .catch((error) => {
-    //     console.error(error);
-    //   });
-
+  const handleAddOrRemoveTag = async (action: "add" | "remove") => {
+    const tagName = ref.current.value;
     try {
       const response = await fetch(
-        "http://localhost:3001/api/photos/remove/tag",
+        `http://localhost:3001/api/photos/${action}/tag`,
         {
           method: "POST",
           credentials: "include",
@@ -83,7 +27,7 @@ const AddTag = () => {
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-      tagElement.value = "";
+      ref.current.value = "";
     } catch (error) {
       console.error(error);
     }
@@ -98,15 +42,16 @@ const AddTag = () => {
             id="tag-name"
             placeholder="Nazwa tagu"
             className="bg-dark-gray p-5 rounded-xl border border-[#909090]"
+            ref={ref}
           />
           <button
-            onClick={() => handleAddTag()}
+            onClick={() => handleAddOrRemoveTag("add")}
             className="bg-dark-gray w-28 hover:bg-[#404040] hover:scale-105 p-5 rounded-xl border border-[#909090]"
           >
             Dodaj
           </button>
           <button
-            onClick={() => handleRemoveTag()}
+            onClick={() => handleAddOrRemoveTag("remove")}
             className="bg-dark-gray w-28 hover:bg-[#404040] hover:scale-105 p-5 rounded-xl border border-[#909090]"
           >
             Usuń
