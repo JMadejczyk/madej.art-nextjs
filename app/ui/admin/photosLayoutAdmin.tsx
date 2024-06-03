@@ -1,4 +1,4 @@
-"use client";
+// "use client";
 
 // import { useEffect, useState } from "react";
 import Image from "next/image";
@@ -7,8 +7,35 @@ import Link from "next/link";
 import { goudy } from "@/app/ui/fonts";
 import styles from "./photos.module.css";
 import { FetchPhotosConfig, PhotoConfig } from "@/app/types/FetchPhotosConfig";
+import { render } from "react-dom";
 
-const SmallImage = (props: { image: PhotoConfig; index: number }) => {
+const handleDelete = (photo_id: number, renderCountHandler: () => void) => {
+  fetch("http://localhost:3001/api/photos/remove", {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ photos: [{ photo_id: photo_id }] }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+      // router.push("/");
+      //   router.reload();
+      renderCountHandler();
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+  console.log("Wysłano żądanie usunięcia zdjęcia");
+};
+
+const SmallImage = (props: {
+  image: PhotoConfig;
+  index: number;
+  renderCountHandler: () => void;
+}) => {
   return (
     // <Link
     //   href={`?modal=true&folder=/${props.image.localization}&file_name=${props.image.file_name}`}
@@ -29,9 +56,17 @@ const SmallImage = (props: { image: PhotoConfig; index: number }) => {
         blurDataURL={props.image.blurred}
       />
       <div
-        className={`w-full ${styles.descr} absolute left-0 bottom-0 opacity-0 hover:opacity-100 text-[#161616] h-9 flex justify-center items-center bg-[#ffffff33] backdrop-blur-[20px] duration-[400ms] ${goudy.className}`}
+        className={`w-full ${styles.descr} absolute left-0 bottom-0 text-[#161616] h-9 flex justify-center items-center bg-[#ffffff33] backdrop-blur-[20px] duration-[400ms] ${goudy.className}`}
       >
-        Kliknij, aby powiekszyć
+        {props.image.description}
+      </div>
+      <div
+        className={`${styles.descr} absolute left-0 top-0 p-4 opacity-0 hover:opacity-100 text-[#161616] h-9 flex justify-center items-center bg-[#ffffff33] backdrop-blur-[20px] duration-[400ms] ${goudy.className}`}
+        onClick={() => {
+          handleDelete(props.image.photo_id, props.renderCountHandler);
+        }}
+      >
+        Usuń
       </div>
     </div>
     // </Link>
@@ -40,6 +75,7 @@ const SmallImage = (props: { image: PhotoConfig; index: number }) => {
 
 export default function Photos_layout_Admin(props: {
   photos_json: FetchPhotosConfig;
+  renderCountHandler: () => void;
 }) {
   console.log("Images has been rerendered");
 
@@ -57,7 +93,11 @@ export default function Photos_layout_Admin(props: {
           >
             {props.photos_json.photos.map((image, index) => (
               <div key={index}>
-                <SmallImage image={image} index={index} />
+                <SmallImage
+                  image={image}
+                  index={index}
+                  renderCountHandler={props.renderCountHandler}
+                />
               </div>
             ))}
           </Masonry>

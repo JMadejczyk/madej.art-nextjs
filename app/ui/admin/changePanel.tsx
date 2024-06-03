@@ -24,6 +24,10 @@ interface FetchPhotosConfig {
 
 export default function ChangePanel() {
   const [images, setImages] = useState<FetchPhotosConfig>({ photos: [] });
+  const [renderCount, setRenderCount] = useState(0);
+  const setRenderCountHandler = () => {
+    setRenderCount(renderCount + 1);
+  };
 
   useEffect(() => {
     fetch("http://localhost:3001/api/photos/get?tags=portraits", {
@@ -36,14 +40,17 @@ export default function ChangePanel() {
         });
       }
     });
-  }, []);
+  }, [renderCount]);
 
   return (
     <main
       className={`min-h-screen h-auto bg-light-gray bg-[url('/img/noise_transparent.png')] bg-fixed`}
     >
       <Suspense fallback={<Loading />}>
-        <PhotosLayout photos_json={images} />
+        <PhotosLayout
+          photos_json={images}
+          renderCountHandler={setRenderCountHandler}
+        />
       </Suspense>
       {/* <Suspense fallback={<Loading />}>
         <Modal photos_json={images} />
