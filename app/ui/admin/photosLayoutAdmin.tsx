@@ -1,5 +1,6 @@
 "use client";
 
+// import { useEffect, useState } from "react";
 import Image from "next/image";
 import Masonry from "@mui/lab/Masonry";
 import Link from "next/link";
@@ -9,35 +10,35 @@ import { FetchPhotosConfig, PhotoConfig } from "@/app/types/FetchPhotosConfig";
 
 const SmallImage = (props: { image: PhotoConfig; index: number }) => {
   return (
-    <Link
-      href={`?modal=true&folder=/${props.image.localization}&file_name=${props.image.file_name}`}
-      scroll={false}
-      className={`select-none`}
-    >
-      <div className={`${styles.photo} w-full relative`}>
-        <Image
-          src={`/${props.image.localization}/${props.image.file_name}`}
-          width={props.image.width}
-          height={props.image.height}
-          quality={60}
-          alt={props.image.description}
-          className="shadow-custom_shadow cursor-pointer"
-          key={props.image.file_name}
-          priority={props.index <= 15 ? true : false}
-          placeholder="blur"
-          blurDataURL={props.image.blurred}
-        />
-        <div
-          className={`w-full ${styles.descr} absolute left-0 bottom-0 opacity-0 hover:opacity-100 text-[#161616] h-9 flex justify-center items-center bg-[#ffffff33] backdrop-blur-[20px] duration-[400ms] ${goudy.className}`}
-        >
-          Kliknij, aby powiekszyć
-        </div>
+    // <Link
+    //   href={`?modal=true&folder=/${props.image.localization}&file_name=${props.image.file_name}`}
+    //   scroll={false}
+    //   className={`select-none`}
+    // >
+    <div className={`${styles.photo} w-full relative`}>
+      <Image
+        src={`/${props.image.localization}/${props.image.file_name}`}
+        width={props.image.width}
+        height={props.image.height}
+        quality={60}
+        alt={props.image.description}
+        className="shadow-custom_shadow cursor-pointer"
+        key={props.image.file_name}
+        priority={props.index <= 15 ? true : false}
+        placeholder="blur"
+        blurDataURL={props.image.blurred}
+      />
+      <div
+        className={`w-full ${styles.descr} absolute left-0 bottom-0 opacity-0 hover:opacity-100 text-[#161616] h-9 flex justify-center items-center bg-[#ffffff33] backdrop-blur-[20px] duration-[400ms] ${goudy.className}`}
+      >
+        Kliknij, aby powiekszyć
       </div>
-    </Link>
+    </div>
+    // </Link>
   );
 };
 
-export default function Photos_layout(props: {
+export default function Photos_layout_Admin(props: {
   photos_json: FetchPhotosConfig;
 }) {
   console.log("Images has been rerendered");

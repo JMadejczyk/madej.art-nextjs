@@ -32,7 +32,7 @@ export default function AdminPanel() {
       {show !== "panel" && (
         <button
           onClick={() => setShow("panel")}
-          className="bg-dark-gray w-28 hover:bg-[#404040] hover:scale-105 p-5 rounded-xl border border-[#909090] shadow-custom_shadow m-8 mb-10"
+          className="bg-dark-gray w-24 hover:bg-[#404040] hover:scale-105 p-4 rounded-xl border border-[#909090] shadow-custom_shadow m-8 mb-10"
         >
           Wróć
         </button>
@@ -42,23 +42,23 @@ export default function AdminPanel() {
         <div>
           <div className="flex flex-col gap-4 items-center">
             <h1 className="text-center text-2xl">Panel Administratora</h1>
-            <h2 className="text-xl">Witaj</h2>
+            <h2 className="text-xl">Witaj, co chcesz zrobić?</h2>
             <div className="flex gap-4">
               <button
-                className="bg-dark-gray w-32 hover:bg-[#404040] hover:scale-105 p-3 rounded-xl border border-[#909090] shadow-custom_shadow"
+                className="bg-dark-gray w-28 hover:bg-[#404040] hover:scale-105 p-3 rounded-xl border border-[#909090] shadow-custom_shadow"
                 onClick={() => setShow("add")}
               >
                 Dodaj
               </button>
               <button
-                className="bg-dark-gray w-32 hover:bg-[#404040] hover:scale-105 p-3 rounded-xl border border-[#909090] shadow-custom_shadow"
+                className="bg-dark-gray w-28 hover:bg-[#404040] hover:scale-105 p-3 rounded-xl border border-[#909090] shadow-custom_shadow"
                 onClick={() => setShow("change")}
               >
                 Zmień
               </button>
 
               <button
-                className="bg-dark-gray w-32 hover:bg-[#404040] hover:scale-105 p-3 rounded-xl border border-[#909090] shadow-custom_shadow"
+                className="bg-dark-gray w-28 hover:bg-[#404040] hover:scale-105 p-3 rounded-xl border border-[#909090] shadow-custom_shadow"
                 onClick={handleLogout}
               >
                 Wyloguj
