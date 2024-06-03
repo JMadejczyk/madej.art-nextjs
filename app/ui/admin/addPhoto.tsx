@@ -13,6 +13,7 @@ const AddPhoto = () => {
   const [filesWithDescriptions, setFilesWithDescriptions] = useState<
     fileWithDescriptionAndTags[]
   >([]);
+  const [message, setMessage] = useState<string>("");
 
   const handleFileButtonClick = () => {
     fileInputRef.current?.click();
@@ -83,13 +84,13 @@ const AddPhoto = () => {
           body: formData,
         }
       );
+      const data = await response.json();
+      console.log(data);
+      setMessage(data.message);
 
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-
-      const data = await response.json();
-      console.log(data);
     } catch (error) {
       console.error(
         "There has been a problem with your fetch operation: ",
@@ -168,23 +169,29 @@ const AddPhoto = () => {
             </div>
           )}
 
-          <div className="flex gap-8 mt-4">
+          <div>
             {filesWithDescriptions.length > 0 && (
               <>
-                <button
-                  className="bg-dark-gray w-40 hover:bg-[#404040] hover:scale-105 p-5 rounded-xl border border-[#909090] shadow-custom_shadow"
-                  // onClick={() => console.log(filesWithDescriptions)}
-                  onClick={() => uploadImages(filesWithDescriptions, "top")}
-                >
-                  Dodaj od góry
-                </button>
-                <button
-                  className="bg-dark-gray w-40 hover:bg-[#404040] hover:scale-105 p-5 rounded-xl border border-[#909090] shadow-custom_shadow"
-                  // onClick={() => console.log(filesWithDescriptions)}
-                  onClick={() => uploadImages(filesWithDescriptions, "bottom")}
-                >
-                  Dodaj od dołu
-                </button>
+                <div className="flex gap-8 mt-4">
+                  <button
+                    className="bg-dark-gray w-40 hover:bg-[#404040] hover:scale-105 p-5 rounded-xl border border-[#909090] shadow-custom_shadow"
+                    // onClick={() => console.log(filesWithDescriptions)}
+                    onClick={() => uploadImages(filesWithDescriptions, "top")}
+                  >
+                    Dodaj od góry
+                  </button>
+                  <button
+                    className="bg-dark-gray w-40 hover:bg-[#404040] hover:scale-105 p-5 rounded-xl border border-[#909090] shadow-custom_shadow"
+                    // onClick={() => console.log(filesWithDescriptions)}
+                    onClick={() =>
+                      uploadImages(filesWithDescriptions, "bottom")
+                    }
+                  >
+                    Dodaj od dołu
+                  </button>
+                </div>
+
+                <div className="text-center mt-8">{message}</div>
               </>
             )}
           </div>

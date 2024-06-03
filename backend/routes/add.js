@@ -331,7 +331,7 @@ router.post("/bottom", upload.array("images"), async (req, res) => {
     } else {
       res
         .status(409)
-        .send({ message: `Photo ${arePhotos} is already in database` });
+        .send({ message: `Photo ${arePhotos} is already in database!` });
     }
   } catch (err) {
     console.error(err);

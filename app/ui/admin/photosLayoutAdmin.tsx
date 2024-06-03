@@ -21,8 +21,6 @@ const handleDelete = (photo_id: number, renderCountHandler: () => void) => {
     .then((response) => response.json())
     .then((data) => {
       console.log(data);
-      // router.push("/");
-      //   router.reload();
       renderCountHandler();
     })
     .catch((error) => {
@@ -49,24 +47,32 @@ const SmallImage = (props: {
         height={props.image.height}
         quality={60}
         alt={props.image.description}
-        className="shadow-custom_shadow cursor-pointer"
+        className="shadow-custom_shadow"
         key={props.image.file_name}
         priority={props.index <= 15 ? true : false}
         placeholder="blur"
         blurDataURL={props.image.blurred}
       />
       <div
-        className={`w-full ${styles.descr} absolute left-0 bottom-0 text-[#161616] h-9 flex justify-center items-center bg-[#ffffff33] backdrop-blur-[20px] duration-[400ms] ${goudy.className}`}
+        className={`w-full ${styles.descr} absolute left-0 bottom-0 text-[#161616] h-9 flex justify-center items-center bg-[#ffffff33] backdrop-blur-[20px] duration-[400ms] ${goudy.className} `}
       >
         {props.image.description}
       </div>
       <div
-        className={`${styles.descr} absolute left-0 top-0 p-4 opacity-0 hover:opacity-100 text-[#161616] h-9 flex justify-center items-center bg-[#ffffff33] backdrop-blur-[20px] duration-[400ms] ${goudy.className}`}
+        className={`${styles.descr} absolute left-0 top-0 p-4 opacity-0 hover:opacity-100 hover:bg-[#ff6666] cursor-pointer text-[#161616] h-9 flex justify-center items-center bg-[#ffffff33] backdrop-blur-[20px] duration-[400ms] ${goudy.className}`}
         onClick={() => {
           handleDelete(props.image.photo_id, props.renderCountHandler);
         }}
       >
         Usuń
+      </div>
+      <div
+        className={`${styles.descr} absolute right-0 top-0 p-4 opacity-0 hover:opacity-100 hover:bg-[#66ff66] cursor-pointer text-[#161616] h-9 flex justify-center items-center bg-[#ffffff33] backdrop-blur-[20px] duration-[400ms] ${goudy.className}`}
+        onClick={() => {
+          //   handleDelete(props.image.photo_id, props.renderCountHandler);
+        }}
+      >
+        Edytuj
       </div>
     </div>
     // </Link>

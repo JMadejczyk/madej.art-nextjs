@@ -4,48 +4,89 @@ const AddTag = () => {
   const [info, setInfo] = useState("");
   const tagElement = document.querySelector("#tag-name") as HTMLInputElement;
 
-  const handleAddTag = () => {
+  const handleAddTag = async () => {
     const tagName = tagElement.value;
     console.log(tagName);
 
-    fetch("http://localhost:3001/api/photos/add/tag", {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ name: tagName }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setInfo(data.message);
-      })
-      .catch((error) => {
-        console.error(error);
+    // fetch("http://localhost:3001/api/photos/add/tag", {
+    //   method: "POST",
+    //   credentials: "include",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({ name: tagName }),
+    // })
+    //   .then((response) => response.json())
+    //   .then((data) => {
+    //     setInfo(data.message);
+    //   })
+    //   .catch((error) => {
+    //     console.error(error);
+    //   });
+
+    try {
+      const response = await fetch("http://localhost:3001/api/photos/add/tag", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name: tagName }),
       });
-    tagElement.value = "";
+      const data = await response.json();
+      setInfo(data.message);
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      tagElement.value = "";
+    } catch (error) {
+      console.error(error);
+    }
   };
 
-  const handleRemoveTag = () => {
+  const handleRemoveTag = async () => {
     const tagName = tagElement.value;
     console.log(tagName);
 
-    fetch("http://localhost:3001/api/photos/remove/tag", {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ name: tagName }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setInfo(data.message);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-    tagElement.value = "";
+    // fetch("http://localhost:3001/api/photos/remove/tag", {
+    //   method: "POST",
+    //   credentials: "include",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({ name: tagName }),
+    // })
+    //   .then((response) => response.json())
+    //   .then((data) => {
+    //     setInfo(data.message);
+    //   })
+    //   .catch((error) => {
+    //     console.error(error);
+    //   });
+
+    try {
+      const response = await fetch(
+        "http://localhost:3001/api/photos/remove/tag",
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ name: tagName }),
+        }
+      );
+      const data = await response.json();
+      setInfo(data.message);
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      tagElement.value = "";
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
