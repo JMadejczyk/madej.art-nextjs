@@ -175,14 +175,12 @@ const AddPhoto = () => {
                 <div className="flex gap-8 mt-4">
                   <button
                     className="bg-dark-gray w-40 hover:bg-[#404040] hover:scale-105 p-5 rounded-xl border border-[#909090] shadow-custom_shadow"
-                    // onClick={() => console.log(filesWithDescriptions)}
                     onClick={() => uploadImages(filesWithDescriptions, "top")}
                   >
                     Dodaj od góry
                   </button>
                   <button
                     className="bg-dark-gray w-40 hover:bg-[#404040] hover:scale-105 p-5 rounded-xl border border-[#909090] shadow-custom_shadow"
-                    // onClick={() => console.log(filesWithDescriptions)}
                     onClick={() =>
                       uploadImages(filesWithDescriptions, "bottom")
                     }

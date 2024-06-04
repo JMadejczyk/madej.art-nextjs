@@ -10,7 +10,7 @@ const Add = () => {
     // {choice === "photo" && <AddPhoto />}
     // {choice === "tag" && <AddTag />}
 
-    <div className="min-h-screen h-auto  bg-light-gray bg-[url('/img/noise_transparent.png')] bg-fixed">
+    <div className="min-h-[80vh] h-auto  bg-light-gray bg-[url('/img/noise_transparent.png')] bg-fixed">
       <div className="h-full w-full pb-16 gap-10 flex items-center flex-col">
         <h1>Wybierz co chcesz dodać:</h1>
         <div className="flex gap-6">
