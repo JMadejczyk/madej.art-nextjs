@@ -28,7 +28,7 @@ export default function AdminPanel() {
     console.log("Wysłano żądanie wylogowania");
   };
   return (
-    <div className="min-h-[90vh] h-auto bg-light-gray bg-[url('/img/noise_transparent.png')] bg-fixed flex flex-col justify-center">
+    <div className="min-h-screen h-auto bg-light-gray bg-[url('/img/noise_transparent.png')] bg-fixed flex flex-col justify-center">
       {show !== "panel" && (
         <button
           onClick={() => setShow("panel")}
