@@ -32,9 +32,30 @@ const AddTag = () => {
     }
   };
 
+  const handleShowTags = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:3001/api/photos/get/tags/all",
+        {
+          method: "GET",
+          credentials: "include",
+        }
+      );
+      const data = await response.json();
+      let tags = data.tags.map((tag: { name: string }) => tag.name);
+      setInfo(tags.join(", "));
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div className="flex justify-center items-center flex-col">
-      <div className="flex bg-[#404040] p-16 rounded-xl bg-[url('/img/noise_transparent.png')] bg-fixed flex-col items-center gap-12">
+      <div className="flex bg-[#404040] p-16 rounded-xl bg-[url('/img/noise_transparent.png')] bg-fixed flex-col items-start gap-6">
         <div className="flex gap-6">
           <input
             type="text"
@@ -56,6 +77,12 @@ const AddTag = () => {
             Usuń
           </button>
         </div>
+        <button
+          onClick={() => handleShowTags()}
+          className="bg-dark-gray hover:bg-[#404040] hover:scale-105 p-5 rounded-xl border border-[#909090]"
+        >
+          Wyświetl wszystkie tagi
+        </button>
 
         <div className={`bg-[#404040] ${info ? "" : "hidden"}`}>{info}</div>
       </div>
