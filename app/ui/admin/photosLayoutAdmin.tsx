@@ -1,6 +1,6 @@
-// "use client";
+"use client";
 
-// import { useEffect, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import Masonry from "@mui/lab/Masonry";
 import Link from "next/link";
@@ -33,6 +33,7 @@ const SmallImage = (props: {
   image: PhotoConfig;
   index: number;
   renderCountHandler: () => void;
+  handleSetModalImage: (image: PhotoConfig) => void;
 }) => {
   return (
     // <Link
@@ -70,6 +71,7 @@ const SmallImage = (props: {
         className={`${styles.descr} absolute right-0 top-0 p-4 opacity-0 hover:opacity-100 hover:bg-[#66ff66] cursor-pointer text-[#161616] h-9 flex justify-center items-center bg-[#ffffff33] backdrop-blur-[20px] duration-[400ms] ${goudy.className}`}
         onClick={() => {
           //   handleDelete(props.image.photo_id, props.renderCountHandler);
+          props.handleSetModalImage(props.image);
         }}
       >
         Edytuj
@@ -84,7 +86,11 @@ export default function Photos_layout_Admin(props: {
   renderCountHandler: () => void;
 }) {
   console.log("Images has been rerendered");
-
+  const [modalImage, setModalImage] = useState<PhotoConfig | null>(null);
+  const handleSetModalImage = (image: PhotoConfig) => {
+    setModalImage(image);
+  };
+  console.log("Modal image: ", modalImage);
   return (
     props.photos_json && (
       <div className="2xl:w-7/12 xl:w-9/12 lg:w-10/12 md:w-11/12 md:mr-auto md:ml-auto flex justify-center mt-2  mr-2 ml-2 pb-16">
@@ -103,11 +109,44 @@ export default function Photos_layout_Admin(props: {
                   image={image}
                   index={index}
                   renderCountHandler={props.renderCountHandler}
+                  handleSetModalImage={handleSetModalImage}
                 />
               </div>
             ))}
           </Masonry>
         }
+        {modalImage && (
+          <div className="fixed top-0 left-0 w-screen h-screen flex justify-center items-center">
+            <div className="bg-[#444444] p-8 rounded-xl shadow-custom_shadow">
+              <button
+                className="bg-[#aa2222] text-white p-2 rounded-xl hover:bg-[#ff6666] hover:scale-[102%] shadow-custom_shadow"
+                onClick={() => setModalImage(null)}
+              >
+                Zamknij
+              </button>
+              <Image
+                src={`/${modalImage.localization}/${modalImage.file_name}`}
+                width={modalImage.width / 10}
+                height={modalImage.height / 10}
+                alt={modalImage.description}
+                className="object-cover rounded-xl shadow-custom_shadow mt-4 mb-4"
+              />
+              <h2 className="text-center">Opis</h2>
+
+              <input
+                type="text"
+                className="w-full bg-dark-gray p-3 rounded-xl border border-[#909090] mb-2 shadow-custom_shadow"
+                placeholder={modalImage.description}
+              />
+              <h2 className="text-center">Tagi</h2>
+              <input
+                type="text"
+                className="w-full bg-dark-gray p-3 rounded-xl border border-[#909090] mb-2 shadow-custom_shadow"
+                // placeholder={modalImage.tags}
+              />
+            </div>
+          </div>
+        )}
       </div>
     )
   );

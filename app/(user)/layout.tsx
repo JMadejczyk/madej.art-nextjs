@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
+import "../globals.css";
+import Header from "../ui/header";
+import Footer from "../ui/footer";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -8,16 +11,16 @@ export const metadata: Metadata = {
   description: "Photography portfolio site",
 };
 
-export default function RootLayout({
+export default function Layout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pl" className="min-h-screen">
-      <body className={`${inter.className} min-h-screen relative`}>
-        {children}
-      </body>
-    </html>
+    <>
+      <Header />
+      {children}
+      <Footer />
+    </>
   );
 }

@@ -7,20 +7,8 @@ import React, { useEffect, useState, Suspense } from "react";
 import Loading from "./loading";
 
 const PhotosLayout = React.lazy(() => import("./photosLayoutAdmin"));
+import { FetchPhotosConfig } from "@/app/types/FetchPhotosConfig";
 // const Modal = React.lazy(() => import("../ui/modal"));
-
-interface FetchPhotosConfig {
-  photos: {
-    photo_id: number;
-    file_name: string;
-    width: number;
-    height: number;
-    description: string;
-    blurred: string;
-    localization: string;
-    position: number;
-  }[];
-}
 
 export default function ChangePanel() {
   const [images, setImages] = useState<FetchPhotosConfig>({ photos: [] });

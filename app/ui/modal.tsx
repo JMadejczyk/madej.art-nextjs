@@ -7,19 +7,7 @@ import { useEffect, useState, useRef } from "react";
 import { FiXSquare, FiChevronRight, FiChevronLeft } from "react-icons/fi";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-
-interface FetchPhotosConfig {
-  photos: {
-    photo_id: number;
-    file_name: string;
-    width: number;
-    height: number;
-    description: string;
-    blurred: string;
-    localization: string;
-    position: number;
-  }[];
-}
+import { FetchPhotosConfig } from "../types/FetchPhotosConfig";
 
 function Modal(props: { photos_json: FetchPhotosConfig }) {
   const searchParams = useSearchParams();

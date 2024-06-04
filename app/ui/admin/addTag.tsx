@@ -5,7 +5,6 @@ const AddTag = () => {
   const ref = useRef<HTMLInputElement>(
     null
   ) as React.MutableRefObject<HTMLInputElement>;
-  // const tagElement = document.querySelector("#tag-name") as HTMLInputElement;
 
   const handleAddOrRemoveTag = async (action: "add" | "remove") => {
     const tagName = ref.current.value;
