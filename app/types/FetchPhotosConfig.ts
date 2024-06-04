@@ -8,6 +8,7 @@ export interface FetchPhotosConfig {
     blurred: string;
     localization: string;
     position: number;
+    tags?: string[];
   }[];
 }
 
@@ -20,4 +21,5 @@ export interface PhotoConfig {
   blurred: string;
   localization: string;
   position: number;
+  tags?: string[];
 }

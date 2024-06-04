@@ -89,12 +89,11 @@ router.get("/tags/:photo_id", (req, res) => {
       throw err;
     }
     res.status(200).send({ tags: rows });
-  });
-
-  db.close((err) => {
-    if (err) {
-      console.error(err.message);
-    }
+    db.close((err) => {
+      if (err) {
+        console.error(err.message);
+      }
+    });
   });
 });
 

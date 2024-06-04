@@ -1,7 +1,9 @@
+"use client";
 import Image from "next/image";
 import { PhotoConfig } from "@/app/types/FetchPhotosConfig";
 import { goudy } from "@/app/ui/fonts";
 import styles from "./photos.module.css";
+import { use, useEffect } from "react";
 
 const handleDelete = (photo_id: number, renderCountHandler: () => void) => {
   fetch("http://localhost:3001/api/photos/remove", {
@@ -29,6 +31,24 @@ const SmallImage = (props: {
   renderCountHandler: () => void;
   handleSetModalImage: (image: PhotoConfig) => void;
 }) => {
+  const handleGetTags = async (photo_id: number) => {
+    try {
+      const response = await fetch(
+        `http://localhost:3001/api/photos/get/tags/${photo_id}`,
+        {
+          method: "GET",
+          credentials: "include",
+        }
+      );
+      const data = await response.json();
+      let tags = data.tags.map((tag: { name: string }) => tag.name);
+      props.handleSetModalImage({ ...props.image, tags: tags });
+      return tags;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     // <Link
     //   href={`?modal=true&folder=/${props.image.localization}&file_name=${props.image.file_name}`}
@@ -65,7 +85,8 @@ const SmallImage = (props: {
         className={`${styles.descr} absolute right-0 top-0 p-4 opacity-0 hover:opacity-100 hover:bg-[#66ff66] cursor-pointer text-[#161616] h-9 flex justify-center items-center bg-[#ffffff33] backdrop-blur-[20px] duration-[400ms] ${goudy.className}`}
         onClick={() => {
           //   handleDelete(props.image.photo_id, props.renderCountHandler);
-          props.handleSetModalImage(props.image);
+          handleGetTags(props.image.photo_id);
+          // props.handleSetModalImage(props.image);
         }}
       >
         Edytuj
