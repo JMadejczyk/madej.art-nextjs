@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState, Suspense } from "react";
-import Loading from "../../loading";
+import Loading from "../../loading.tsx";
 import { FetchPhotosConfig } from "@/app/types/FetchPhotosConfig";
 
 const PhotosLayout = React.lazy(() => import("../../ui/photos"));
