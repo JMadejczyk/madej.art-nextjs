@@ -9,6 +9,8 @@ import ChangePhotoDataModal from "@/app/ui/admin/changePhotoDataModal";
 export default function Photos_layout_Admin(props: {
   photos_json: FetchPhotosConfig;
   renderCountHandler: () => void;
+  handleSetSelectedPhotos: (photo_ids: string[]) => void;
+  selectedPhotos: string[];
 }) {
   // console.log("Images has been rerendered");
   const [modalImage, setModalImage] = useState<PhotoConfig | null>(null);
@@ -30,7 +32,27 @@ export default function Photos_layout_Admin(props: {
             defaultSpacing={2}
           >
             {props.photos_json.photos.map((image, index) => (
-              <div key={index}>
+              <div
+                key={index}
+                className={`${
+                  props.selectedPhotos.includes(String(image.photo_id))
+                    ? ""
+                    : "border-transparent"
+                } border`}
+                onClick={() => {
+                  if (props.selectedPhotos[0] === "") {
+                    props.handleSetSelectedPhotos([String(image.photo_id), ""]);
+                  } else if (
+                    props.selectedPhotos[0] !== String(image.photo_id) &&
+                    props.selectedPhotos[1] === ""
+                  ) {
+                    props.handleSetSelectedPhotos([
+                      props.selectedPhotos[0],
+                      String(image.photo_id),
+                    ]);
+                  }
+                }}
+              >
                 <SmallImage
                   image={image}
                   index={index}

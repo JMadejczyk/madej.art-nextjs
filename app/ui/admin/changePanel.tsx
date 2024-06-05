@@ -11,11 +11,14 @@ export default function ChangePanel() {
   const [renderCount, setRenderCount] = useState(0);
   const [tags, setTags] = useState<{ name: string; count: number }[]>([]);
   const [selectedTags, setSelectedTags] = useState<string[]>(["portraits"]);
+  const [selectedPhotos, setSelectedPhotos] = useState<string[]>([]);
 
+  const handleSetSelectedPhotos = (photo_ids: string[]) => {
+    setSelectedPhotos(photo_ids);
+  };
   const handleSetSelectedTags = (tags: string[]) => {
     setSelectedTags(tags);
   };
-
   const setRenderCountHandler = () => {
     setRenderCount(renderCount + 1);
   };
@@ -58,7 +61,26 @@ export default function ChangePanel() {
     fetchData();
   }, []);
 
-  console.log(selectedTags);
+  const handleSwapPhotos = async (selectedPhotos: string[]) => {
+    const response = await fetch("http://localhost:3001/api/photos/swap", {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        first: parseInt(selectedPhotos[0]),
+        second: parseInt(selectedPhotos[1]),
+      }),
+    });
+    const data = await response.json();
+    console.log(data);
+    setRenderCountHandler();
+  };
+
+  // console.log(selectedTags);
+  console.log(selectedPhotos);
+
   return (
     <main
       className={`min-h-screen h-auto bg-light-gray bg-[url('/img/noise_transparent.png')] bg-fixed md:flex items-start`}
@@ -67,13 +89,18 @@ export default function ChangePanel() {
         <SelectTagsMenu
           selectedTags={selectedTags}
           handleSetSelectedTags={handleSetSelectedTags}
+          handleSetSelectedPhotos={handleSetSelectedPhotos}
+          selectedPhotos={selectedPhotos}
           tags={tags}
+          handleSwapPhotos={handleSwapPhotos}
         />
       </Suspense>
       <Suspense fallback={<Loading />}>
         <PhotosLayout
           photos_json={images}
           renderCountHandler={setRenderCountHandler}
+          handleSetSelectedPhotos={handleSetSelectedPhotos}
+          selectedPhotos={selectedPhotos}
         />
       </Suspense>
     </main>
