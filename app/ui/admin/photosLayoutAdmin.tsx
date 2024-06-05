@@ -45,6 +45,7 @@ export default function Photos_layout_Admin(props: {
           <ChangePhotoDataModal
             handleSetModalImage={handleSetModalImage}
             modalImage={modalImage}
+            renderCountHandler={props.renderCountHandler}
           />
         )}
       </div>

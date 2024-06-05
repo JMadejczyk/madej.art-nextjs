@@ -25,6 +25,7 @@ router.post("/description", (req, res) => {
     }
     res.status(200).send({
       message: `Photos ${data.photo_id} description set to ${data.description}`,
+      description: data.description,
     });
 
     db.close((err) => {
@@ -73,6 +74,7 @@ router.post("/tags", (req, res) => {
         let tags = rows.map((row) => row.name);
         res.status(200).send({
           message: `Photos ${data.photo_id} tags set to ${tags.join(", ")}`,
+          tags: tags,
         });
         db.close((err) => {
           if (err) {

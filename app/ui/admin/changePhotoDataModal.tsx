@@ -1,4 +1,3 @@
-"use client";
 import { PhotoConfig } from "@/app/types/FetchPhotosConfig";
 import Image from "next/image";
 import { useRef } from "react";
@@ -6,9 +5,74 @@ import { useRef } from "react";
 const ChangePhotoDataModal = (props: {
   handleSetModalImage: (image: PhotoConfig | null) => void;
   modalImage: PhotoConfig;
+  renderCountHandler: () => void;
 }) => {
-  const ref = useRef<HTMLInputElement>(null);
-  const ref2 = useRef<HTMLInputElement>(null);
+  const ref = useRef<HTMLInputElement>(
+    null
+  ) as React.MutableRefObject<HTMLInputElement>;
+  const ref2 = useRef<HTMLInputElement>(
+    null
+  ) as React.MutableRefObject<HTMLInputElement>;
+
+  const handleUpdatePhotoData = async () => {
+    try {
+      const tags = ref2.current.value.split(",").map((tag) => tag.trim());
+      // console.log("tags: ", tags);
+      if (tags[0].length > 0) {
+        const response = await fetch(
+          "http://localhost:3001/api/photos/update/tags",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+            body: JSON.stringify({
+              photo_id: props.modalImage.photo_id,
+              tags: tags,
+            }),
+          }
+        );
+        if (response.ok) {
+          let data = await response.json();
+          // console.log(data.message);
+          ref2.current.value = "";
+          ref2.current.placeholder = data.tags.join(", ");
+        }
+      }
+      const description = ref.current.value;
+      // console.log("description: ", description);
+
+      if (description) {
+        const response2 = await fetch(
+          "http://localhost:3001/api/photos/update/description",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+            body: JSON.stringify({
+              photo_id: props.modalImage.photo_id,
+              description: description,
+            }),
+          }
+        );
+        if (response2.ok) {
+          let data = await response2.json();
+          // console.log(data.message);
+          ref.current.value = "";
+          ref.current.placeholder = data.description;
+        }
+      }
+      props.renderCountHandler();
+    } catch (err) {
+      // console.log(err);
+      console.error(err);
+    }
+  };
+
+  // console.log("Modal refresher: ", modalRefresher);
   return (
     <div className="fixed top-0 left-0 w-screen h-screen flex justify-center items-center">
       <div className="bg-[#444444] p-8 m-10 rounded-xl shadow-custom_shadow">
@@ -43,7 +107,9 @@ const ChangePhotoDataModal = (props: {
         />
         <button
           className="bg-[#22aa22] text-white p-2 rounded-xl hover:bg-[#44cc44] hover:scale-[102%] shadow-custom_shadow"
-          onClick={() => {}}
+          onClick={() => {
+            handleUpdatePhotoData();
+          }}
         >
           Zapisz
         </button>

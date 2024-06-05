@@ -1,9 +1,7 @@
-"use client";
 import Image from "next/image";
 import { PhotoConfig } from "@/app/types/FetchPhotosConfig";
 import { goudy } from "@/app/ui/fonts";
 import styles from "./photos.module.css";
-import { use, useEffect } from "react";
 
 const handleDelete = (photo_id: number, renderCountHandler: () => void) => {
   fetch("http://localhost:3001/api/photos/remove", {

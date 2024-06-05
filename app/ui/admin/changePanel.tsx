@@ -1,18 +1,13 @@
 "use client";
-
-import Header from "@/app/ui/header";
-// import Photos_layout from "../ui/photos";
 import React, { useEffect, useState, Suspense } from "react";
-// import Modal from "../ui/modal";
 import Loading from "./loading";
-
-const PhotosLayout = React.lazy(() => import("./photosLayoutAdmin"));
 import { FetchPhotosConfig } from "@/app/types/FetchPhotosConfig";
-// const Modal = React.lazy(() => import("../ui/modal"));
+const PhotosLayout = React.lazy(() => import("./photosLayoutAdmin"));
 
 export default function ChangePanel() {
   const [images, setImages] = useState<FetchPhotosConfig>({ photos: [] });
   const [renderCount, setRenderCount] = useState(0);
+
   const setRenderCountHandler = () => {
     setRenderCount(renderCount + 1);
   };
@@ -40,9 +35,6 @@ export default function ChangePanel() {
           renderCountHandler={setRenderCountHandler}
         />
       </Suspense>
-      {/* <Suspense fallback={<Loading />}>
-        <Modal photos_json={images} />
-      </Suspense> */}
     </main>
   );
 }
