@@ -13,7 +13,7 @@ export default function ChangePanel() {
   };
 
   useEffect(() => {
-    fetch("http://localhost:3001/api/photos/get?tags=portraits", {
+    fetch("http://localhost:3001/api/photos/get?tags=street,portraits", {
       method: "GET",
       credentials: "include",
     }).then((res: Response) => {

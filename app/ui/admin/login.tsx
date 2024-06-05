@@ -31,7 +31,7 @@ export default function Login() {
   };
   return (
     <>
-      <div className="min-h-[90vh] h-auto bg-light-gray bg-[url('/img/noise_transparent.png')] bg-fixed flex justify-center items-center">
+      <div className="min-h-screen h-auto bg-light-gray bg-[url('/img/noise_transparent.png')] bg-fixed flex justify-center items-center">
         <div className="flex flex-col gap-4 items-center">
           <h1 className="text-center text-2xl">Panel logowania</h1>
           <div>
