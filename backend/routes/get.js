@@ -43,6 +43,33 @@ router.get("/", (req, res) => {
   });
 });
 
+router.get("/tags/allcount", (req, res) => {
+  let db = new sqlite3.Database(
+    "./backend/database/portfolio.db",
+    sqlite3.OPEN_READONLY,
+    (err) => {
+      if (err) {
+        console.error(err.message);
+      }
+    }
+  );
+
+  let sql = `SELECT tags.name, count(tags_photos.photo_id) as count FROM tags join tags_photos on tags.tag_id = tags_photos.tag_id group by tags.tag_id;`;
+
+  db.all(sql, (err, rows) => {
+    if (err) {
+      throw err;
+    }
+    res.status(200).send({ tags: rows });
+  });
+
+  db.close((err) => {
+    if (err) {
+      console.error(err.message);
+    }
+  });
+});
+
 router.get("/tags/all", (req, res) => {
   let db = new sqlite3.Database(
     "./backend/database/portfolio.db",
