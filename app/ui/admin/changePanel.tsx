@@ -2,13 +2,19 @@
 import React, { useEffect, useState, Suspense, useRef } from "react";
 import Loading from "./loading";
 import { FetchPhotosConfig } from "@/app/types/FetchPhotosConfig";
+import SelectTagsMenu from "./selectTagsMenu";
 const PhotosLayout = React.lazy(() => import("./photosLayoutAdmin"));
+// const SelectTagsMenu = React.lazy(() => import("./selectTagsMenu"));
 
 export default function ChangePanel() {
   const [images, setImages] = useState<FetchPhotosConfig>({ photos: [] });
   const [renderCount, setRenderCount] = useState(0);
   const [tags, setTags] = useState<{ name: string; count: number }[]>([]);
   const [selectedTags, setSelectedTags] = useState<string[]>(["portraits"]);
+
+  const handleSetSelectedTags = (tags: string[]) => {
+    setSelectedTags(tags);
+  };
 
   const setRenderCountHandler = () => {
     setRenderCount(renderCount + 1);
@@ -51,42 +57,19 @@ export default function ChangePanel() {
     };
     fetchData();
   }, []);
+
   console.log(selectedTags);
   return (
     <main
-      className={`min-h-screen h-auto bg-light-gray bg-[url('/img/noise_transparent.png')] bg-fixed flex items-start`}
+      className={`min-h-screen h-auto bg-light-gray bg-[url('/img/noise_transparent.png')] bg-fixed md:flex items-start`}
     >
-      <div className="ml-8 mr-8 p-8 bg-dark-gray rounded-xl border border-[#909090] shadow-custom_shadow">
-        {/* bg-dark-gray w-24 hover:bg-[#404040] hover:scale-105 p-4  shadow-custom_shadow m-8 mb-10" */}
-
-        {tags.map((tag, index) => {
-          return (
-            <div className="" key={index + "div"}>
-              <label key={index + "label"} className="text-white text-nowrap">
-                <input
-                  type="checkbox"
-                  className="m-2 w-4 h-4 bg-white border-2 border-gray-400 rounded-md cursor-pointer"
-                  key={index}
-                  {...(selectedTags.includes(tag.name)
-                    ? { checked: true }
-                    : { checked: false })}
-                  value={tag.name}
-                  onChange={(e) => {
-                    if (e.target.checked) {
-                      setSelectedTags([...selectedTags, tag.name]);
-                    } else {
-                      setSelectedTags(
-                        selectedTags.filter((item) => item !== tag.name)
-                      );
-                    }
-                  }}
-                />
-                {tag.name} <span className="text-[#909090]">({tag.count})</span>
-              </label>
-            </div>
-          );
-        })}
-      </div>
+      <Suspense fallback={<Loading />}>
+        <SelectTagsMenu
+          selectedTags={selectedTags}
+          handleSetSelectedTags={handleSetSelectedTags}
+          tags={tags}
+        />
+      </Suspense>
       <Suspense fallback={<Loading />}>
         <PhotosLayout
           photos_json={images}
