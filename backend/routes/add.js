@@ -1,9 +1,9 @@
-const { Router } = require("express");
-const sqlite3 = require("sqlite3").verbose();
-const multer = require("multer");
-const sharp = require("sharp");
-const arePhotosInDb = require("../lib/addFunctions").arePhotosInDb;
-const addTags = require("../lib/addFunctions").addTags;
+import { Router } from "express";
+import sqlite3 from "sqlite3";
+
+import multer from "multer";
+import sharp from "sharp";
+import { arePhotosInDb, addTags } from "../lib/addFunctions.js";
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -346,4 +346,4 @@ router.post("/bottom", upload.array("images"), async (req, res) => {
 
 ////////////////////////////////////////////////////////////////
 
-module.exports = router;
+export default router;

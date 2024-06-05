@@ -53,4 +53,4 @@ const addTags = (db, photos) => {
   });
 };
 
-module.exports = { arePhotosInDb, addTags };
+export { arePhotosInDb, addTags };

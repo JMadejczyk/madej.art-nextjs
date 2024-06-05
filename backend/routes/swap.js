@@ -1,6 +1,5 @@
-const { Router } = require("express");
-const { type } = require("os");
-const sqlite3 = require("sqlite3").verbose();
+import { Router } from "express";
+import sqlite3 from "sqlite3";
 
 const router = Router();
 
@@ -67,7 +66,6 @@ router.post("/", (req, res) => {
   second = second.photo_id;
   console.log("First: " + first + " Second:" + second);
 
-  // Stwórz ciąg znaków zapytania dla każdego elementu w photoIds
   let sql = `select photo_id, position from photos where photo_id in (?, ?)`;
   let sql2 = `update photos set position = position * -1 where photo_id in (?, ?)`;
   let sql3 = `update photos set position = ? where photo_id = ?`;
@@ -94,7 +92,6 @@ router.post("/", (req, res) => {
           res.status(200).send({ message: "Photos swapped" });
         });
       });
-      //   res.status(200).send({ message: "Photos swapped" });
     });
   });
   db.close((err) => {
@@ -104,4 +101,4 @@ router.post("/", (req, res) => {
   });
 });
 
-module.exports = router;
+export default router;

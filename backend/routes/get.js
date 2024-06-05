@@ -1,17 +1,6 @@
-const { Router } = require("express");
-const { get } = require("http");
-const sqlite3 = require("sqlite3").verbose();
-
+import { Router } from "express";
+import sqlite3 from "sqlite3";
 const router = Router();
-
-// router.use((req, res, next) => {
-//   if (req.session.authenticated) {
-//     next();
-//   } else {
-//     res.status(401).send({ message: "Unauthorized" });
-//     // res.status(401).send(req.session);
-//   }
-// });
 
 router.get("/", (req, res) => {
   let db = new sqlite3.Database(
@@ -25,8 +14,6 @@ router.get("/", (req, res) => {
   );
 
   let data = req.query.tags.split(",");
-  // console.log(data);
-
   let placeholders = data.map(() => "?").join(",");
   let sql = `SELECT distinct photos.photo_id, file_name, width, height, description, blurred, localization, position FROM photos join tags_photos on photos.photo_id = tags_photos.photo_id join tags on tags.tag_id = tags_photos.tag_id WHERE tags.name in (${placeholders}) order by photos.position asc;`;
   db.all(sql, data, (err, rows) => {
@@ -123,4 +110,4 @@ router.get("/tags/:photo_id", (req, res) => {
   });
 });
 
-module.exports = router;
+export default router;

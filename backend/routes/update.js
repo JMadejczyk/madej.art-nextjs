@@ -1,6 +1,5 @@
-const { Router } = require("express");
-const sqlite3 = require("sqlite3").verbose();
-
+import { Router } from "express";
+import sqlite3 from "sqlite3";
 const router = Router();
 
 router.post("/description", (req, res) => {
@@ -16,7 +15,6 @@ router.post("/description", (req, res) => {
 
   let data = req.body;
 
-  //   let sql = `UPDATE photos SET position = ? WHERE photo_id = ?;`;
   let sql = `update photos set description = ? where photo_id = ?;`;
 
   db.run(sql, [data.description, data.photo_id], (err) => {
@@ -86,4 +84,4 @@ router.post("/tags", (req, res) => {
   });
 });
 
-module.exports = router;
+export default router;

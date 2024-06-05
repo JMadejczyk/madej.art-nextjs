@@ -1,6 +1,6 @@
-const { Router } = require("express");
-const sqlite3 = require("sqlite3").verbose();
-const fs = require("fs");
+import { Router } from "express";
+import sqlite3 from "sqlite3";
+import fs from "fs";
 
 const router = Router();
 
@@ -37,8 +37,6 @@ router.post("/drop", (req, res) => {
     }
   });
 });
-
-module.exports = router;
 
 ////////////////////////////////////////////////////////////////
 
@@ -171,3 +169,5 @@ router.post("/", (req, res) => {
     }
   );
 });
+
+export default router;

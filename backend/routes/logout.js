@@ -1,4 +1,4 @@
-const express = require("express");
+import express from "express";
 
 const router = express.Router();
 
@@ -7,4 +7,4 @@ router.post("/", (req, res) => {
   res.send({ message: "User logged out" });
 });
 
-module.exports = router;
+export default router;

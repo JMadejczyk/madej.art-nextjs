@@ -1,6 +1,6 @@
-const { Router } = require("express");
-const bcrypt = require("bcrypt");
-const sqlite3 = require("sqlite3").verbose();
+import { Router } from "express";
+import bcrypt from "bcrypt";
+import sqlite3 from "sqlite3";
 
 const router = Router();
 
@@ -15,8 +15,6 @@ router.post("/", async (req, res) => {
     }
   );
   const { username, password } = req.body;
-  // console.log(username, password, req.body);
-
   const sql = `SELECT username, password FROM users WHERE username = ?`;
 
   db.get(sql, username, (err, row) => {
@@ -34,12 +32,8 @@ router.post("/", async (req, res) => {
             username: row.username,
             authenticated: true,
           });
-          // res.redirect("http://localhost:3000/admin/dashboard");
         } else {
           // Passwords don't match
-          // bcrypt.hash(password, 10, function (err, hash) {
-          // console.log(hash, row.password);
-          // });
           return res.status(401).send({ message: "Invalid password" });
         }
       });
@@ -49,4 +43,4 @@ router.post("/", async (req, res) => {
   });
 });
 
-module.exports = router;
+export default router;

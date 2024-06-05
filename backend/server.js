@@ -1,17 +1,16 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-const session = require("express-session");
-const cookieParser = require("cookie-parser");
-const loginRoute = require("./routes/login");
-const getRoute = require("./routes/get");
-const addRoute = require("./routes/add");
-const removeRoute = require("./routes/remove");
-const swapRoute = require("./routes/swap");
-const authRoute = require("./routes/auth");
-const logoutRoute = require("./routes/logout");
-const updateRoute = require("./routes/update");
-
-const { requireAuth } = require("./lib/auth");
+import express from "express";
+import bodyParser from "body-parser";
+import session from "express-session";
+import cookieParser from "cookie-parser";
+import loginRoute from "./routes/login.js";
+import getRoute from "./routes/get.js";
+import addRoute from "./routes/add.js";
+import removeRoute from "./routes/remove.js";
+import swapRoute from "./routes/swap.js";
+import authRoute from "./routes/auth.js";
+import logoutRoute from "./routes/logout.js";
+import updateRoute from "./routes/update.js";
+import requireAuth from "./lib/auth.js";
 
 const app = express();
 const port = 3001;
@@ -22,7 +21,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-const cors = require("cors");
+import cors from "cors";
 
 app.use(
   cors({

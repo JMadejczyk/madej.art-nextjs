@@ -6,5 +6,5 @@ const requireAuth = (req, res, next) => {
     res.status(401).send({ message: "Unauthorized" });
   }
 };
-module.exports = { requireAuth };
+export default requireAuth;
 // Path: backend/routes/login.js
