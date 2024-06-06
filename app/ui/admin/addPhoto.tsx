@@ -82,6 +82,7 @@ const AddPhoto = () => {
         {
           method: "POST",
           body: formData,
+          credentials: "include",
         }
       );
       const data = await response.json();

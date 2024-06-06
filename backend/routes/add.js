@@ -1,7 +1,7 @@
 import { Router } from "express";
 import sqlite3 from "sqlite3";
-
 import multer from "multer";
+
 import sharp from "sharp";
 import { arePhotosInDb, addTags } from "../lib/addFunctions.js";
 
@@ -138,7 +138,7 @@ router.post("/top", upload.array("images"), async (req, res) => {
     req.files[0].position = 1;
   }
 
-  photos = req.files;
+  let photos = req.files;
 
   console.log(photos);
 
@@ -187,7 +187,7 @@ router.post("/top", upload.array("images"), async (req, res) => {
                 height,
                 description,
                 blurred,
-                (localization = "images"),
+                "images",
                 position,
               ],
               (err) => {
@@ -264,7 +264,7 @@ router.post("/bottom", upload.array("images"), async (req, res) => {
     req.files[0].position = 1;
   }
 
-  photos = req.files;
+  let photos = req.files;
 
   console.log(photos);
 

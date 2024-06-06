@@ -17,8 +17,6 @@ const port = 3001;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-// app.use(express.json());
-// app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 import cors from "cors";
@@ -32,7 +30,7 @@ app.use(
 
 app.use(
   session({
-    secret: "Dupa",
+    secret: "dupa1234",
     resave: false,
     saveUninitialized: false,
     cookie: {
@@ -51,7 +49,7 @@ app.use("/api/login", loginRoute);
 app.use("/api/auth", authRoute);
 app.use("/api/logout", logoutRoute);
 
-// app.use(requireAuth);
+app.use(requireAuth());
 app.use("/api/photos/add", addRoute);
 app.use("/api/photos/remove", removeRoute);
 app.use("/api/photos/swap", swapRoute);
