@@ -1,10 +1,13 @@
 import { useRef, useState, useEffect } from "react";
+import { FiTrash2 } from "react-icons/fi";
+
 // import Image from "next/image";
 
 interface fileWithDescriptionAndTags {
   file: File;
   description: string;
   tags: string;
+  url: string;
 }
 
 const AddPhoto = () => {
@@ -23,7 +26,12 @@ const AddPhoto = () => {
     if (e.target.files) {
       const files = Array.from(e.target.files);
       setFilesWithDescriptions(
-        files.map((file) => ({ file, description: "", tags: "" }))
+        files.map((file) => ({
+          file,
+          description: "",
+          tags: "",
+          url: URL.createObjectURL(file),
+        }))
       );
     }
   };
@@ -54,6 +62,13 @@ const AddPhoto = () => {
 
   const handleCloseModal = () => {
     setSelectedImage(null);
+  };
+
+  const handleDelPhoto = (index: number) => {
+    URL.revokeObjectURL(filesWithDescriptions[index].file.name);
+    setFilesWithDescriptions((prev) =>
+      prev.filter((fileWithDescriptionAndTags, i) => i !== index)
+    );
   };
 
   useEffect(() => {
@@ -123,21 +138,33 @@ const AddPhoto = () => {
           />
           {filesWithDescriptions.map((fileWithDescriptionAndTags, index) => (
             <div key={index + "zdj"} className="flex items-center gap-4">
-              <img
-                src={URL.createObjectURL(fileWithDescriptionAndTags.file)}
-                alt={fileWithDescriptionAndTags.file.name}
-                className="w-[3.33rem] h-20 object-cover rounded-xl hover:scale-105 shadow-custom_shadow cursor-pointer"
-                onClick={() =>
-                  handleImageClick(fileWithDescriptionAndTags.file)
-                }
-              />
+              <div className="mt-8">
+                <img
+                  // src={URL.createObjectURL(fileWithDescriptionAndTags.file)}
+                  src={fileWithDescriptionAndTags.url}
+                  alt={fileWithDescriptionAndTags.file.name}
+                  className="w-[3.33rem] h-20 object-cover rounded-xl hover:scale-105 shadow-custom_shadow cursor-pointer"
+                  onClick={() =>
+                    handleImageClick(fileWithDescriptionAndTags.file)
+                  }
+                />
+                <button
+                  className="bg-[#770000] hover:bg-[#880000] hover:scale-105 p-2 m-2 rounded-xl border border-[#909090] shadow-custom_shadow"
+                  onClick={() => handleDelPhoto(index)}
+                  tabIndex={-1}
+                >
+                  <FiTrash2 />
+                </button>
+              </div>
+
               <div className="w-[60vw]">
                 <p>{fileWithDescriptionAndTags.file.name}</p>
                 <input
                   className="w-full bg-dark-gray p-4 rounded-xl border border-[#909090] mb-2 shadow-custom_shadow"
                   type="text"
                   placeholder="Opis"
-                  onBlur={(event) => {
+                  value={fileWithDescriptionAndTags.description}
+                  onChange={(event) => {
                     handleDescriptionChange(index, event.target.value);
                   }}
                 />
@@ -145,7 +172,11 @@ const AddPhoto = () => {
                   className="w-full bg-dark-gray p-4 rounded-xl border border-[#909090] shadow-custom_shadow"
                   type="text"
                   placeholder="Tagi (oddzielone przecinkiem)"
-                  onBlur={(event) => {
+                  // onBlur={(event) => {
+                  //   handleTagsChange(index, event.target.value);
+                  // }}
+                  value={fileWithDescriptionAndTags.tags}
+                  onChange={(event) => {
                     handleTagsChange(index, event.target.value);
                   }}
                 />
