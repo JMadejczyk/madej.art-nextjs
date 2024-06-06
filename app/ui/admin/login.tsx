@@ -6,6 +6,7 @@ export default function Login() {
   const router = useRouter();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
 
   const handleLogin = () => {
     fetch("http://localhost:3001/api/login/", {
@@ -18,20 +19,24 @@ export default function Login() {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
+        // console.log(data);
         // setUser(data);
         // console.log(user);
         router.push("/dashboard");
-        router.refresh();
+        if (data.message === "User authenticated") {
+          router.refresh();
+        } else {
+          setMessage(data.message);
+        }
       })
       .catch((error) => {
         console.error("Error:", error);
       });
-    console.log("Wysłano żądanie logowania");
+    // console.log("Wysłano żądanie logowania");
   };
   return (
     <>
-      <div className="min-h-screen h-auto bg-light-gray bg-[url('/img/noise_transparent.png')] bg-fixed flex justify-center items-center">
+      <div className="min-h-screen h-auto bg-light-gray bg-[url('/img/noise_transparent.png')] bg-fixed flex flex-col justify-center items-center">
         <div className="flex flex-col gap-4 items-center">
           <h1 className="text-center text-2xl">Panel logowania</h1>
           <div>
@@ -58,6 +63,7 @@ export default function Login() {
             Zaloguj
           </button>
         </div>
+        <p className="m-4">{message}</p>
       </div>
     </>
   );
