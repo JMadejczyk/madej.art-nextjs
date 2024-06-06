@@ -2,6 +2,7 @@ import Image from "next/image";
 import { PhotoConfig } from "@/app/types/FetchPhotosConfig";
 import { goudy } from "@/app/ui/fonts";
 import styles from "./photos.module.css";
+import { shrinkImageSize } from "@/app/lib/shrinkImageSize";
 
 const handleDelete = (photo_id: number, renderCountHandler: () => void) => {
   fetch("http://localhost:3001/api/photos/remove", {
@@ -47,6 +48,15 @@ const SmallImage = (props: {
     }
   };
 
+  // const shrinkImageSize = (width: number, height: number) => {
+  //   const aspectRatio = width / height;
+  //   if (width > 400) {
+  //     return { width: 400, height: 400 / aspectRatio };
+  //   } else {
+  //     return { width: width, height: width / aspectRatio };
+  //   }
+  // };
+
   return (
     // <Link
     //   href={`?modal=true&folder=/${props.image.localization}&file_name=${props.image.file_name}`}
@@ -56,8 +66,12 @@ const SmallImage = (props: {
     <div className={`${styles.photo} w-full relative`}>
       <Image
         src={`/${props.image.localization}/${props.image.file_name}`}
-        width={props.image.width}
-        height={props.image.height}
+        width={
+          shrinkImageSize(props.image.width, props.image.height, 400).width
+        }
+        height={
+          shrinkImageSize(props.image.width, props.image.height, 400).height
+        }
         quality={60}
         alt={props.image.description}
         className="shadow-custom_shadow"

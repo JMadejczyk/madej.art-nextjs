@@ -1,6 +1,7 @@
 import { PhotoConfig } from "@/app/types/FetchPhotosConfig";
 import Image from "next/image";
 import { useRef } from "react";
+import { shrinkImageSizeModal } from "@/app/lib/shrinkImageSize";
 
 const ChangePhotoDataModal = (props: {
   handleSetModalImage: (image: PhotoConfig | null) => void;
@@ -85,8 +86,22 @@ const ChangePhotoDataModal = (props: {
         <Image
           key={props.modalImage.file_name}
           src={`/${props.modalImage.localization}/${props.modalImage.file_name}`}
-          width={props.modalImage.width / 10}
-          height={props.modalImage.height / 10}
+          // width={props.modalImage.width}
+          width={
+            shrinkImageSizeModal(
+              props.modalImage.width,
+              props.modalImage.height,
+              400
+            ).width
+          }
+          height={
+            shrinkImageSizeModal(
+              props.modalImage.width,
+              props.modalImage.height,
+              400
+            ).height
+          }
+          // height={props.modalImage.height}
           alt={props.modalImage.description}
           className="object-cover rounded-xl shadow-custom_shadow mt-4 mb-4 "
         />

@@ -1,13 +1,13 @@
 "use client";
 
 import { useSearchParams, usePathname } from "next/navigation";
-import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState, useRef } from "react";
 import { FiXSquare, FiChevronRight, FiChevronLeft } from "react-icons/fi";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { FetchPhotosConfig } from "../types/FetchPhotosConfig";
+import { shrinkImageSizeModal } from "@/app/lib/shrinkImageSize";
 
 function Modal(props: { photos_json: FetchPhotosConfig }) {
   const searchParams = useSearchParams();
@@ -163,8 +163,22 @@ function Modal(props: { photos_json: FetchPhotosConfig }) {
 
                       <Image
                         src={`/${photoObj.localization}/${photoObj.file_name}`}
-                        height={photoObj.height}
-                        width={photoObj.width}
+                        // height={photoObj.height}
+                        height={
+                          shrinkImageSizeModal(
+                            photoObj.width,
+                            photoObj.height,
+                            1650
+                          ).height
+                        }
+                        width={
+                          shrinkImageSizeModal(
+                            photoObj.width,
+                            photoObj.height,
+                            1650
+                          ).width
+                        }
+                        // width={photoObj.width}
                         alt={photoObj.description}
                         placeholder="blur"
                         blurDataURL={photoObj.blurred}
