@@ -12,7 +12,6 @@ router.get("/", (req, res) => {
       }
     }
   );
-
   let data = req.query.tags.split(",");
   let placeholders = data.map(() => "?").join(",");
   let sql = `SELECT distinct photos.photo_id, file_name, width, height, description, blurred, localization, position FROM photos join tags_photos on photos.photo_id = tags_photos.photo_id join tags on tags.tag_id = tags_photos.tag_id WHERE tags.name in (${placeholders}) order by photos.position asc;`;
@@ -21,6 +20,58 @@ router.get("/", (req, res) => {
       throw err;
     }
     res.status(200).send({ photos: rows });
+  });
+
+  db.close((err) => {
+    if (err) {
+      console.error(err.message);
+    }
+  });
+});
+
+router.get("/all", (req, res) => {
+  let db = new sqlite3.Database(
+    "./backend/database/portfolio.db",
+    sqlite3.OPEN_READONLY,
+    (err) => {
+      if (err) {
+        console.error(err.message);
+      }
+    }
+  );
+
+  let sql = `select * from photos order by position asc;`;
+  db.all(sql, (err, rows) => {
+    if (err) {
+      throw err;
+    }
+    res.status(200).send({ photos: rows });
+  });
+
+  db.close((err) => {
+    if (err) {
+      console.error(err.message);
+    }
+  });
+});
+
+router.get("/count", (req, res) => {
+  let db = new sqlite3.Database(
+    "./backend/database/portfolio.db",
+    sqlite3.OPEN_READONLY,
+    (err) => {
+      if (err) {
+        console.error(err.message);
+      }
+    }
+  );
+
+  let sql = `select count(*) as count from photos;`;
+  db.all(sql, (err, rows) => {
+    if (err) {
+      throw err;
+    }
+    res.status(200).send(rows[0]);
   });
 
   db.close((err) => {

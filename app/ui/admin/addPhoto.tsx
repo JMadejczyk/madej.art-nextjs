@@ -1,9 +1,7 @@
 import { useRef, useState, useEffect } from "react";
 import { FiTrash2 } from "react-icons/fi";
 
-// import Image from "next/image";
-
-interface fileWithDescriptionAndTags {
+interface fileWithData {
   file: File;
   description: string;
   tags: string;
@@ -14,7 +12,7 @@ const AddPhoto = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [filesWithDescriptions, setFilesWithDescriptions] = useState<
-    fileWithDescriptionAndTags[]
+    fileWithData[]
   >([]);
   const [message, setMessage] = useState<string>("");
 
@@ -38,20 +36,16 @@ const AddPhoto = () => {
 
   const handleDescriptionChange = (index: number, description: string) => {
     setFilesWithDescriptions((prev) =>
-      prev.map((fileWithDescriptionAndTags, i) =>
-        i === index
-          ? { ...fileWithDescriptionAndTags, description }
-          : fileWithDescriptionAndTags
+      prev.map((fileWithData, i) =>
+        i === index ? { ...fileWithData, description } : fileWithData
       )
     );
   };
 
   const handleTagsChange = (index: number, tags: string) => {
     setFilesWithDescriptions((prev) =>
-      prev.map((fileWithDescriptionAndTags, i) =>
-        i === index
-          ? { ...fileWithDescriptionAndTags, tags }
-          : fileWithDescriptionAndTags
+      prev.map((fileWithData, i) =>
+        i === index ? { ...fileWithData, tags } : fileWithData
       )
     );
   };
@@ -67,7 +61,7 @@ const AddPhoto = () => {
   const handleDelPhoto = (index: number) => {
     URL.revokeObjectURL(filesWithDescriptions[index].file.name);
     setFilesWithDescriptions((prev) =>
-      prev.filter((fileWithDescriptionAndTags, i) => i !== index)
+      prev.filter((fileWithData, i) => i !== index)
     );
   };
 
@@ -80,15 +74,15 @@ const AddPhoto = () => {
   }, [selectedImage]);
 
   const uploadImages = async (
-    filesWithDescriptions: fileWithDescriptionAndTags[],
+    filesWithDescriptions: fileWithData[],
     option: "top" | "bottom"
   ) => {
     const formData = new FormData();
 
-    filesWithDescriptions.forEach((fileWithDescriptionAndTags, index) => {
-      formData.append(`images`, fileWithDescriptionAndTags.file);
-      formData.append(`descriptions`, fileWithDescriptionAndTags.description);
-      formData.append(`tags`, fileWithDescriptionAndTags.tags);
+    filesWithDescriptions.forEach((fileWithData, index) => {
+      formData.append(`images`, fileWithData.file);
+      formData.append(`descriptions`, fileWithData.description);
+      formData.append(`tags`, fileWithData.tags);
     });
 
     try {
@@ -136,17 +130,15 @@ const AddPhoto = () => {
             multiple
             onChange={handleFileChange}
           />
-          {filesWithDescriptions.map((fileWithDescriptionAndTags, index) => (
+          {filesWithDescriptions.map((fileWithData, index) => (
             <div key={index + "zdj"} className="flex items-center gap-4">
               <div className="mt-8">
                 <img
-                  // src={URL.createObjectURL(fileWithDescriptionAndTags.file)}
-                  src={fileWithDescriptionAndTags.url}
-                  alt={fileWithDescriptionAndTags.file.name}
+                  // src={URL.createObjectURL(fileWithData.file)}
+                  src={fileWithData.url}
+                  alt={fileWithData.file.name}
                   className="w-[3.33rem] h-20 object-cover rounded-xl hover:scale-105 shadow-custom_shadow cursor-pointer"
-                  onClick={() =>
-                    handleImageClick(fileWithDescriptionAndTags.file)
-                  }
+                  onClick={() => handleImageClick(fileWithData.file)}
                 />
                 <button
                   className="bg-[#770000] hover:bg-[#880000] hover:scale-105 p-2 m-2 rounded-xl border border-[#909090] shadow-custom_shadow"
@@ -158,12 +150,12 @@ const AddPhoto = () => {
               </div>
 
               <div className="w-[60vw]">
-                <p>{fileWithDescriptionAndTags.file.name}</p>
+                <p>{fileWithData.file.name}</p>
                 <input
                   className="w-full bg-dark-gray p-4 rounded-xl border border-[#909090] mb-2 shadow-custom_shadow"
                   type="text"
                   placeholder="Opis"
-                  value={fileWithDescriptionAndTags.description}
+                  value={fileWithData.description}
                   onChange={(event) => {
                     handleDescriptionChange(index, event.target.value);
                   }}
@@ -172,10 +164,7 @@ const AddPhoto = () => {
                   className="w-full bg-dark-gray p-4 rounded-xl border border-[#909090] shadow-custom_shadow"
                   type="text"
                   placeholder="Tagi (oddzielone przecinkiem)"
-                  // onBlur={(event) => {
-                  //   handleTagsChange(index, event.target.value);
-                  // }}
-                  value={fileWithDescriptionAndTags.tags}
+                  value={fileWithData.tags}
                   onChange={(event) => {
                     handleTagsChange(index, event.target.value);
                   }}

@@ -24,8 +24,11 @@ export default function ChangePanel() {
   };
 
   useEffect(() => {
+    // console.log(selectedTags);
     fetch(
-      `http://localhost:3001/api/photos/get?tags=${selectedTags.join(",")}`,
+      selectedTags.includes("all")
+        ? `http://localhost:3001/api/photos/get/all`
+        : `http://localhost:3001/api/photos/get?tags=${selectedTags.join(",")}`,
       {
         method: "GET",
         credentials: "include",
@@ -55,8 +58,18 @@ export default function ChangePanel() {
           count: tag.count,
         };
       });
-      setTags(tags);
+
+      const response2 = await fetch(
+        "http://localhost:3001/api/photos/get/count",
+        {
+          method: "GET",
+          credentials: "include",
+        }
+      );
+      const data2 = await response2.json();
+      tags.push({ name: "all", count: data2.count });
       console.log(tags);
+      setTags(tags);
     };
     fetchData();
   }, []);
@@ -79,7 +92,7 @@ export default function ChangePanel() {
   };
 
   // console.log(selectedTags);
-  console.log(selectedPhotos);
+  // console.log(selectedPhotos);
 
   return (
     <main
