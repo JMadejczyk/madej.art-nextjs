@@ -66,13 +66,16 @@ const SmallImage = (props: {
     <div className={`${styles.photo} w-full relative`}>
       <Image
         src={`/${props.image.localization}/${props.image.file_name}`}
-        width={
-          shrinkImageSize(props.image.width, props.image.height, 400).width
-        }
-        height={
-          shrinkImageSize(props.image.width, props.image.height, 400).height
-        }
-        quality={60}
+        // width={
+        //   shrinkImageSize(props.image.width, props.image.height, 400).width
+        // }
+        // height={
+        //   shrinkImageSize(props.image.width, props.image.height, 400).height
+        // }
+        width={props.image.width}
+        height={props.image.height}
+        sizes="(max-width: 600px) 50vw, (max-width: 900px) 33vw, (max-width: 1020px) 25vw, (max-width: 1280px) 20vw, (max-width: 1535px) 18vw, 15vw"
+        quality={75}
         alt={props.image.description}
         className="shadow-custom_shadow"
         key={props.image.file_name}

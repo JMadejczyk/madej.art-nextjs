@@ -163,22 +163,27 @@ function Modal(props: { photos_json: FetchPhotosConfig }) {
 
                       <Image
                         src={`/${photoObj.localization}/${photoObj.file_name}`}
-                        // height={photoObj.height}
-                        height={
-                          shrinkImageSizeModal(
-                            photoObj.width,
-                            photoObj.height,
-                            1650
-                          ).height
+                        // height={
+                        //   shrinkImageSizeModal(
+                        //     photoObj.width,
+                        //     photoObj.height,
+                        //     1650
+                        //   ).height
+                        // }
+                        // width={
+                        //   shrinkImageSizeModal(
+                        //     photoObj.width,
+                        //     photoObj.height,
+                        //     1650
+                        //   ).width
+                        // }
+                        height={photoObj.height}
+                        width={photoObj.width}
+                        sizes={
+                          photoObj.width > photoObj.height
+                            ? `(max-width: 1250px) 100vw, (max-width: 1800px) 93vw, 80vw`
+                            : `(max-width: 600px) 100vw, (max-width: 800px) 90vw, (max-width: 1000px) 83vw, (max-width: 1400px) 70vw, 50vw`
                         }
-                        width={
-                          shrinkImageSizeModal(
-                            photoObj.width,
-                            photoObj.height,
-                            1650
-                          ).width
-                        }
-                        // width={photoObj.width}
                         alt={photoObj.description}
                         placeholder="blur"
                         blurDataURL={photoObj.blurred}

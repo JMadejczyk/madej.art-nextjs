@@ -86,22 +86,27 @@ const ChangePhotoDataModal = (props: {
         <Image
           key={props.modalImage.file_name}
           src={`/${props.modalImage.localization}/${props.modalImage.file_name}`}
-          // width={props.modalImage.width}
-          width={
-            shrinkImageSizeModal(
-              props.modalImage.width,
-              props.modalImage.height,
-              400
-            ).width
+          sizes={
+            props.modalImage.width > props.modalImage.height
+              ? `(max-width: 1250px) 100vw, (max-width: 1800px) 93vw, 80vw`
+              : `(max-width: 600px) 100vw, (max-width: 800px) 90vw, (max-width: 1000px) 83vw, (max-width: 1400px) 70vw, 50vw`
           }
-          height={
-            shrinkImageSizeModal(
-              props.modalImage.width,
-              props.modalImage.height,
-              400
-            ).height
-          }
-          // height={props.modalImage.height}
+          // width={
+          //   shrinkImageSizeModal(
+          //     props.modalImage.width,
+          //     props.modalImage.height,
+          //     400
+          //   ).width
+          // }
+          // height={
+          //   shrinkImageSizeModal(
+          //     props.modalImage.width,
+          //     props.modalImage.height,
+          //     400
+          //   ).height
+          // }
+          width={props.modalImage.width}
+          height={props.modalImage.height}
           alt={props.modalImage.description}
           className="object-cover rounded-xl shadow-custom_shadow mt-4 mb-4 "
         />
