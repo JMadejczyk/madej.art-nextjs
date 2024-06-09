@@ -2,7 +2,6 @@ import Image from "next/image";
 import { PhotoConfig } from "@/app/types/FetchPhotosConfig";
 import { goudy } from "@/app/ui/fonts";
 import styles from "./photos.module.css";
-import { shrinkImageSize } from "@/app/lib/shrinkImageSize";
 
 const handleDelete = (photo_id: number, renderCountHandler: () => void) => {
   fetch("http://localhost:3001/api/photos/remove", {
@@ -48,30 +47,10 @@ const SmallImage = (props: {
     }
   };
 
-  // const shrinkImageSize = (width: number, height: number) => {
-  //   const aspectRatio = width / height;
-  //   if (width > 400) {
-  //     return { width: 400, height: 400 / aspectRatio };
-  //   } else {
-  //     return { width: width, height: width / aspectRatio };
-  //   }
-  // };
-
   return (
-    // <Link
-    //   href={`?modal=true&folder=/${props.image.localization}&file_name=${props.image.file_name}`}
-    //   scroll={false}
-    //   className={`select-none`}
-    // >
     <div className={`${styles.photo} w-full relative`}>
       <Image
         src={`/${props.image.localization}/${props.image.file_name}`}
-        // width={
-        //   shrinkImageSize(props.image.width, props.image.height, 400).width
-        // }
-        // height={
-        //   shrinkImageSize(props.image.width, props.image.height, 400).height
-        // }
         width={props.image.width}
         height={props.image.height}
         sizes="(max-width: 600px) 50vw, (max-width: 900px) 33vw, (max-width: 1020px) 25vw, (max-width: 1280px) 20vw, (max-width: 1535px) 18vw, 15vw"
@@ -99,9 +78,7 @@ const SmallImage = (props: {
       <div
         className={`${styles.descr} absolute right-0 top-0 p-4 opacity-0 hover:opacity-100 hover:bg-[#66ff66] cursor-pointer text-[#161616] h-9 flex justify-center items-center bg-[#ffffff33] backdrop-blur-[20px] duration-[400ms] ${goudy.className}`}
         onClick={() => {
-          //   handleDelete(props.image.photo_id, props.renderCountHandler);
           handleGetTags(props.image.photo_id);
-          // props.handleSetModalImage(props.image);
         }}
       >
         Edytuj

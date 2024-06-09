@@ -6,7 +6,6 @@ import Link from "next/link";
 import { goudy } from "@/app/ui/fonts";
 import styles from "./photos.module.css";
 import { FetchPhotosConfig, PhotoConfig } from "@/app/types/FetchPhotosConfig";
-import { shrinkImageSize } from "@/app/lib/shrinkImageSize";
 
 const SmallImage = (props: { image: PhotoConfig; index: number }) => {
   return (
@@ -18,12 +17,6 @@ const SmallImage = (props: { image: PhotoConfig; index: number }) => {
       <div className={`${styles.photo} w-full relative`}>
         <Image
           src={`/${props.image.localization}/${props.image.file_name}`}
-          // width={
-          //   shrinkImageSize(props.image.width, props.image.height, 400).width
-          // }
-          // height={
-          //   shrinkImageSize(props.image.width, props.image.height, 400).height
-          // }
           width={props.image.width}
           height={props.image.height}
           quality={75}

@@ -7,7 +7,7 @@ import { FiXSquare, FiChevronRight, FiChevronLeft } from "react-icons/fi";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { FetchPhotosConfig } from "../types/FetchPhotosConfig";
-import { shrinkImageSizeModal } from "@/app/lib/shrinkImageSize";
+import { shrinkImageSizeModal } from "../lib/shrinkImageSize";
 
 function Modal(props: { photos_json: FetchPhotosConfig }) {
   const searchParams = useSearchParams();
@@ -140,8 +140,16 @@ function Modal(props: { photos_json: FetchPhotosConfig }) {
                     <motion.div
                       initial={{
                         translateX: isNext
-                          ? photoObj.width / 4
-                          : -photoObj.width / 4,
+                          ? shrinkImageSizeModal(
+                              photoObj.width,
+                              photoObj.height,
+                              800
+                            ).width / 4
+                          : -shrinkImageSizeModal(
+                              photoObj.width,
+                              photoObj.height,
+                              800
+                            ).width / 4,
                         opacity: 0,
                       }}
                       animate={{ translateX: 0, opacity: 1 }}
@@ -163,20 +171,6 @@ function Modal(props: { photos_json: FetchPhotosConfig }) {
 
                       <Image
                         src={`/${photoObj.localization}/${photoObj.file_name}`}
-                        // height={
-                        //   shrinkImageSizeModal(
-                        //     photoObj.width,
-                        //     photoObj.height,
-                        //     1650
-                        //   ).height
-                        // }
-                        // width={
-                        //   shrinkImageSizeModal(
-                        //     photoObj.width,
-                        //     photoObj.height,
-                        //     1650
-                        //   ).width
-                        // }
                         height={photoObj.height}
                         width={photoObj.width}
                         sizes={
@@ -190,7 +184,7 @@ function Modal(props: { photos_json: FetchPhotosConfig }) {
                         priority={true}
                         className="max-h-[80vh] w-auto"
                         quality={90}
-                        key={"image" + photoObj.file_name}
+                        key={"ModalImage" + photoObj.file_name}
                       />
 
                       <div

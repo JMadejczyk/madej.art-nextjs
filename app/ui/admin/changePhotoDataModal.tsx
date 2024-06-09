@@ -1,7 +1,6 @@
 import { PhotoConfig } from "@/app/types/FetchPhotosConfig";
 import Image from "next/image";
 import { useRef } from "react";
-import { shrinkImageSizeModal } from "@/app/lib/shrinkImageSize";
 
 const ChangePhotoDataModal = (props: {
   handleSetModalImage: (image: PhotoConfig | null) => void;
@@ -86,29 +85,18 @@ const ChangePhotoDataModal = (props: {
         <Image
           key={props.modalImage.file_name}
           src={`/${props.modalImage.localization}/${props.modalImage.file_name}`}
-          sizes={
-            props.modalImage.width > props.modalImage.height
-              ? `(max-width: 1250px) 100vw, (max-width: 1800px) 93vw, 80vw`
-              : `(max-width: 600px) 100vw, (max-width: 800px) 90vw, (max-width: 1000px) 83vw, (max-width: 1400px) 70vw, 50vw`
-          }
-          // width={
-          //   shrinkImageSizeModal(
-          //     props.modalImage.width,
-          //     props.modalImage.height,
-          //     400
-          //   ).width
-          // }
-          // height={
-          //   shrinkImageSizeModal(
-          //     props.modalImage.width,
-          //     props.modalImage.height,
-          //     400
-          //   ).height
-          // }
           width={props.modalImage.width}
           height={props.modalImage.height}
+          placeholder="blur"
+          blurDataURL={props.modalImage.blurred}
+          sizes={
+            props.modalImage.width > props.modalImage.height
+              ? `(max-width: 1250px) 90vw, (max-width: 1800px) 80vw, 70vw`
+              : `(max-width: 600px) 100vw, (max-width: 800px) 90vw, (max-width: 1000px) 83vw, (max-width: 1400px) 70vw, 50vw`
+          }
+          quality={80}
           alt={props.modalImage.description}
-          className="object-cover rounded-xl shadow-custom_shadow mt-4 mb-4 "
+          className="max-h-[55vh] w-auto rounded-xl shadow-custom_shadow mt-4 mb-4"
         />
         <h2 className="text-center">Opis</h2>
 
