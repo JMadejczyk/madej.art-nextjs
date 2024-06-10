@@ -7,7 +7,6 @@ import { FiXSquare, FiChevronRight, FiChevronLeft } from "react-icons/fi";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { FetchPhotosConfig } from "../types/FetchPhotosConfig";
-import { shrinkImageSizeModal } from "../lib/shrinkImageSize";
 
 function Modal(props: { photos_json: FetchPhotosConfig }) {
   const searchParams = useSearchParams();
@@ -139,24 +138,12 @@ function Modal(props: { photos_json: FetchPhotosConfig }) {
                   <AnimatePresence mode="wait">
                     <motion.div
                       initial={{
-                        translateX: isNext
-                          ? shrinkImageSizeModal(
-                              photoObj.width,
-                              photoObj.height,
-                              800
-                            ).width / 4
-                          : -shrinkImageSizeModal(
-                              photoObj.width,
-                              photoObj.height,
-                              800
-                            ).width / 4,
+                        translateX: isNext ? 120 : -120,
                         opacity: 0,
                       }}
                       animate={{ translateX: 0, opacity: 1 }}
                       exit={{
-                        translateX: isNext
-                          ? -photoObj.width / 4
-                          : photoObj.width / 4,
+                        translateX: isNext ? -120 : 120,
                         opacity: 0,
                       }}
                       transition={{ duration: 0.125 }}
