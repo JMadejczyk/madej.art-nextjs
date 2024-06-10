@@ -1,5 +1,8 @@
 import { useRef, useState, useEffect } from "react";
 import { FiTrash2 } from "react-icons/fi";
+import dotenv from "dotenv";
+dotenv.config();
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 interface fileWithData {
   file: File;
@@ -86,14 +89,11 @@ const AddPhoto = () => {
     });
 
     try {
-      const response = await fetch(
-        `http://localhost:3001/api/photos/add/${option}`,
-        {
-          method: "POST",
-          body: formData,
-          credentials: "include",
-        }
-      );
+      const response = await fetch(`${apiUrl}/api/photos/add/${option}`, {
+        method: "POST",
+        body: formData,
+        credentials: "include",
+      });
       const data = await response.json();
       console.log(data);
       setMessage(data.message);

@@ -1,6 +1,9 @@
 import { PhotoConfig } from "@/app/types/FetchPhotosConfig";
 import Image from "next/image";
 import { useRef } from "react";
+import dotenv from "dotenv";
+dotenv.config();
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 const ChangePhotoDataModal = (props: {
   handleSetModalImage: (image: PhotoConfig | null) => void;
@@ -19,20 +22,17 @@ const ChangePhotoDataModal = (props: {
       const tags = ref2.current.value.split(",").map((tag) => tag.trim());
       // console.log("tags: ", tags);
       if (tags[0].length > 0) {
-        const response = await fetch(
-          "http://localhost:3001/api/photos/update/tags",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            credentials: "include",
-            body: JSON.stringify({
-              photo_id: props.modalImage.photo_id,
-              tags: tags,
-            }),
-          }
-        );
+        const response = await fetch(`${apiUrl}/api/photos/update/tags`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            photo_id: props.modalImage.photo_id,
+            tags: tags,
+          }),
+        });
         if (response.ok) {
           let data = await response.json();
           // console.log(data.message);
@@ -45,7 +45,7 @@ const ChangePhotoDataModal = (props: {
 
       if (description) {
         const response2 = await fetch(
-          "http://localhost:3001/api/photos/update/description",
+          `${apiUrl}/api/photos/update/description`,
           {
             method: "POST",
             headers: {

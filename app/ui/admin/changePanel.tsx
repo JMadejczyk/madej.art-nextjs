@@ -4,6 +4,9 @@ import Loading from "./loading";
 import { FetchPhotosConfig } from "@/app/types/FetchPhotosConfig";
 import SelectTagsMenu from "./selectTagsMenu";
 const PhotosLayout = React.lazy(() => import("./photosLayoutAdmin"));
+import dotenv from "dotenv";
+dotenv.config();
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 // const SelectTagsMenu = React.lazy(() => import("./selectTagsMenu"));
 
 export default function ChangePanel() {
@@ -27,8 +30,8 @@ export default function ChangePanel() {
     // console.log(selectedTags);
     fetch(
       selectedTags.includes("all")
-        ? `http://localhost:3001/api/photos/get/all`
-        : `http://localhost:3001/api/photos/get?tags=${selectedTags.join(",")}`,
+        ? `${apiUrl}/api/photos/get/all`
+        : `${apiUrl}/api/photos/get?tags=${selectedTags.join(",")}`,
       {
         method: "GET",
         credentials: "include",
@@ -44,13 +47,10 @@ export default function ChangePanel() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch(
-        "http://localhost:3001/api/photos/get/tags/allcount",
-        {
-          method: "GET",
-          credentials: "include",
-        }
-      );
+      const response = await fetch(`${apiUrl}/api/photos/get/tags/allcount`, {
+        method: "GET",
+        credentials: "include",
+      });
       const data = await response.json();
       let tags = data.tags.map((tag: { name: string; count: number }) => {
         return {
@@ -59,13 +59,10 @@ export default function ChangePanel() {
         };
       });
 
-      const response2 = await fetch(
-        "http://localhost:3001/api/photos/get/count",
-        {
-          method: "GET",
-          credentials: "include",
-        }
-      );
+      const response2 = await fetch(`${apiUrl}/api/photos/get/count`, {
+        method: "GET",
+        credentials: "include",
+      });
       const data2 = await response2.json();
       tags.push({ name: "all", count: data2.count });
       console.log(tags);
@@ -75,7 +72,7 @@ export default function ChangePanel() {
   }, []);
 
   const handleSwapPhotos = async (selectedPhotos: string[]) => {
-    const response = await fetch("http://localhost:3001/api/photos/swap", {
+    const response = await fetch(`${apiUrl}/api/photos/swap`, {
       method: "POST",
       credentials: "include",
       headers: {

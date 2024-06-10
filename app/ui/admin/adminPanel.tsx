@@ -4,13 +4,16 @@ import Login from "./login";
 import { useRouter } from "next/navigation";
 import AddPanel from "./addPanel";
 import ChangePanel from "./changePanel";
+import dotenv from "dotenv";
+dotenv.config();
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export default function AdminPanel() {
   const router = useRouter();
   const [show, setShow] = useState("panel");
 
   const handleLogout = () => {
-    fetch("http://localhost:3001/api/logout", {
+    fetch(`${apiUrl}/api/logout`, {
       method: "POST",
       credentials: "include",
       headers: {

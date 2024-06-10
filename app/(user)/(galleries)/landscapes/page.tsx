@@ -5,20 +5,21 @@ import Loading from "../../../loading.tsx";
 const PhotosLayout = React.lazy(() => import("../../../ui/photos"));
 const Modal = React.lazy(() => import("../../../ui/modal"));
 import { FetchPhotosConfig } from "@/app/types/FetchPhotosConfig";
+import dotenv from "dotenv";
+dotenv.config();
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export default function Home() {
   const [images, setImages] = useState<FetchPhotosConfig>({ photos: [] });
 
   useEffect(() => {
-    fetch("http://localhost:3001/api/photos/get?tags=landscapes").then(
-      (res: Response) => {
-        if (res.ok) {
-          res.json().then((res) => {
-            setImages(res);
-          });
-        }
+    fetch(`${apiUrl}/api/photos/get?tags=landscapes`).then((res: Response) => {
+      if (res.ok) {
+        res.json().then((res) => {
+          setImages(res);
+        });
       }
-    );
+    });
   }, []);
 
   return (

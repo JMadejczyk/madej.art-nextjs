@@ -2,9 +2,12 @@ import Image from "next/image";
 import { PhotoConfig } from "@/app/types/FetchPhotosConfig";
 import { goudy } from "@/app/ui/fonts";
 import styles from "./photos.module.css";
+import dotenv from "dotenv";
+dotenv.config();
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 const handleDelete = (photo_id: number, renderCountHandler: () => void) => {
-  fetch("http://localhost:3001/api/photos/remove", {
+  fetch(`${apiUrl}/api/photos/remove`, {
     method: "POST",
     credentials: "include",
     headers: {
@@ -32,7 +35,7 @@ const SmallImage = (props: {
   const handleGetTags = async (photo_id: number) => {
     try {
       const response = await fetch(
-        `http://localhost:3001/api/photos/get/tags/${photo_id}`,
+        `${apiUrl}/api/photos/get/tags/${photo_id}`,
         {
           method: "GET",
           credentials: "include",

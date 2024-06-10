@@ -1,6 +1,9 @@
 "use client";
 import { useState, useContext } from "react";
 import { useRouter } from "next/navigation";
+import dotenv from "dotenv";
+dotenv.config();
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export default function Login() {
   const router = useRouter();
@@ -9,7 +12,7 @@ export default function Login() {
   const [message, setMessage] = useState("");
 
   const handleLogin = () => {
-    fetch("http://localhost:3001/api/login/", {
+    fetch(`${apiUrl}/api/login/`, {
       method: "POST",
       credentials: "include",
       headers: {

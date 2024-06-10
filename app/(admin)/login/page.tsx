@@ -4,11 +4,14 @@ import { useState } from "react";
 // import AdminPanel from "../ui/adminPanel";
 import Login from "../../ui/admin/login";
 import { useRouter } from "next/navigation";
+import dotenv from "dotenv";
+dotenv.config();
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export default function Admin() {
   const router = useRouter();
 
-  fetch("http://localhost:3001/api/auth", {
+  fetch(`${apiUrl}/api/auth`, {
     method: "post",
     credentials: "include",
     headers: {

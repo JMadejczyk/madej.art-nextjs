@@ -1,4 +1,7 @@
 import { useRef, useState } from "react";
+import dotenv from "dotenv";
+dotenv.config();
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 const AddTag = () => {
   const [info, setInfo] = useState("");
@@ -9,17 +12,14 @@ const AddTag = () => {
   const handleAddOrRemoveTag = async (action: "add" | "remove") => {
     const tagName = ref.current.value;
     try {
-      const response = await fetch(
-        `http://localhost:3001/api/photos/${action}/tag`,
-        {
-          method: "POST",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ name: tagName }),
-        }
-      );
+      const response = await fetch(`${apiUrl}/api/photos/${action}/tag`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name: tagName }),
+      });
       const data = await response.json();
       setInfo(data.message);
 
@@ -34,13 +34,10 @@ const AddTag = () => {
 
   const handleShowTags = async () => {
     try {
-      const response = await fetch(
-        "http://localhost:3001/api/photos/get/tags/all",
-        {
-          method: "GET",
-          credentials: "include",
-        }
-      );
+      const response = await fetch(`${apiUrl}/api/photos/get/tags/all`, {
+        method: "GET",
+        credentials: "include",
+      });
       const data = await response.json();
       let tags = data.tags.map((tag: { name: string }) => tag.name);
       setInfo(tags.join(", "));
