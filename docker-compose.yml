@@ -1,0 +1,30 @@
+services:
+  frontend:
+    image: jakmad/frontend_madej.art:latest
+    command: npm run dev
+    ports:
+      - "3000:3000"
+    networks:
+      - app-network
+    # volumes:
+    #   - images_data:/public/images
+
+  backend:
+    image: jakmad/api_madej.art:latest
+    command: npm start
+    ports:
+      - "3001:3001"
+    networks:
+      - app-network
+    # volumes:
+    #   - images_data:/src/images
+    #   - db_data:/src/database
+
+networks:
+  app-network:
+    driver: bridge
+# volumes:
+#   images_data:
+#   db_data:
+# TODO dodać volumes ( ten folder ze zdjęciami )
+# naprawić błędy z konsoli

@@ -17,7 +17,8 @@
     "nodemon": "^3.1.0",
     "react": "^18",
     "react-dom": "^18",
-    "react-icons": "^5.0.1"
+    "react-icons": "^5.0.1",
+    "sharp": "^0.33.4"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
