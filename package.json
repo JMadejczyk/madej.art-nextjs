@@ -7,7 +7,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "watch": "nodemon --watch public/images -e jpg,png,gif,jpeg --exec 'npm run start'"
   },
   "dependencies": {
     "@mui/lab": "^5.0.0-alpha.167",
