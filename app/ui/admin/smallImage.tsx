@@ -17,13 +17,13 @@ const handleDelete = (photo_id: number, renderCountHandler: () => void) => {
   })
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
+      // console.log(data);
       renderCountHandler();
     })
     .catch((error) => {
       console.error("Error:", error);
     });
-  console.log("Wysłano żądanie usunięcia zdjęcia");
+  // console.log("Wysłano żądanie usunięcia zdjęcia");
 };
 
 const SmallImage = (props: {

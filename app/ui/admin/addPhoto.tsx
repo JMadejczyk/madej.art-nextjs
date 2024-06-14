@@ -95,7 +95,7 @@ const AddPhoto = () => {
         credentials: "include",
       });
       const data = await response.json();
-      console.log(data);
+      // console.log(data);
       setMessage(data.message);
 
       if (!response.ok) {

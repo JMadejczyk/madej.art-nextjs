@@ -22,13 +22,13 @@ export default function AdminPanel() {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
+        // console.log(data);
         router.push("/");
       })
       .catch((error) => {
         console.error("Error:", error);
       });
-    console.log("Wysłano żądanie wylogowania");
+    // console.log("Wysłano żądanie wylogowania");
   };
   return (
     <div className="min-h-screen h-auto bg-light-gray bg-[url('/img/noise_transparent.png')] bg-fixed flex flex-col">

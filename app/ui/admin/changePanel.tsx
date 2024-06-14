@@ -65,7 +65,7 @@ export default function ChangePanel() {
       });
       const data2 = await response2.json();
       tags.push({ name: "all", count: data2.count });
-      console.log(tags);
+      // console.log(tags);
       setTags(tags);
     };
     fetchData();
@@ -84,7 +84,7 @@ export default function ChangePanel() {
       }),
     });
     const data = await response.json();
-    console.log(data);
+    // console.log(data);
     setRenderCountHandler();
   };
 

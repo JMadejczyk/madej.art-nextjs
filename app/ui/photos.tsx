@@ -41,7 +41,7 @@ const SmallImage = (props: { image: PhotoConfig; index: number }) => {
 export default function Photos_layout(props: {
   photos_json: FetchPhotosConfig;
 }) {
-  console.log("Images has been rerendered");
+  // console.log("Images has been rerendered");
 
   return (
     props.photos_json && (

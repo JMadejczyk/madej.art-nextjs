@@ -20,7 +20,7 @@ export default function Admin() {
   })
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
+      // console.log(data);
       if (data.message === "User authenticated") {
         router.push("/dashboard");
       }
