@@ -16,7 +16,7 @@ const SelectTagsMenu = (props: {
                 <input
                   type="checkbox"
                   className="m-2 w-4 h-4 bg-white border-2 border-gray-400 rounded-md cursor-pointer"
-                  key={index}
+                  key={index + "input"}
                   {...(props.selectedTags.includes(tag.name)
                     ? { checked: true }
                     : { checked: false })}

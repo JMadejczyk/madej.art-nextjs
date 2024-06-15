@@ -56,7 +56,7 @@ export default function Photos_layout(props: {
             defaultSpacing={2}
           >
             {props.photos_json.photos.map((image, index) => (
-              <div key={index}>
+              <div key={index + image.file_name + "mason"}>
                 <SmallImage image={image} index={index} />
               </div>
             ))}

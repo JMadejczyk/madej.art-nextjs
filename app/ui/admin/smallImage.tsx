@@ -60,7 +60,7 @@ const SmallImage = (props: {
         quality={75}
         alt={props.image.description}
         className="shadow-custom_shadow"
-        key={props.image.file_name}
+        key={props.image.file_name + "photo"}
         priority={props.index <= 15 ? true : false}
         placeholder="blur"
         blurDataURL={props.image.blurred}

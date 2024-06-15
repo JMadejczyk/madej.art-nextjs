@@ -33,7 +33,7 @@ export default function Photos_layout_Admin(props: {
           >
             {props.photos_json.photos.map((image, index) => (
               <div
-                key={index}
+                key={index + image.file_name + "mason"}
                 className={`${
                   props.selectedPhotos.includes(String(image.photo_id))
                     ? ""
