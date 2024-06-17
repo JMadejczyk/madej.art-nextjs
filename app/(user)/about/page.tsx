@@ -43,7 +43,7 @@ function First() {
         className={` h-auto flex flex-col-reverse lg:flex-row justify-center items-center `}
       >
         <motion.div
-          className={`w-[345px] sm:w-[430px] md:w-[415px] font-[#F2F2F2] text-[#F2F2F2]  text-xl sm:text-2xl ml-6 mr-6 md:mr-16 md:ml-16 drop-shadow-custom_shadow flex flex-wrap ${caveat.className}`}
+          className={`w-[280px] sm:w-[430px] md:w-[415px] font-[#F2F2F2] text-[#F2F2F2] text-l sm:text-2xl ml-auto mr-auto md:mr-16 md:ml-16 drop-shadow-custom_shadow flex flex-wrap ${caveat.className}`}
           variants={sentence}
           initial="hidden"
           animate="visible"
