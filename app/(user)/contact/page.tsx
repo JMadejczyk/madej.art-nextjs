@@ -15,7 +15,7 @@ export default function Contact() {
       <h1 className="text-3xl text-center m-10 mt-24">Kontakt</h1>
 
       <div className="flex gap-10 flex-col sm:flex-row sm:gap-20 items-start m-10 mb-20">
-        <div className="text-center flex flex-col w-36">
+        <div className="text-center flex flex-col w-36 m-auto">
           <div className="rounded-full bg-dark-gray p-6 border w-fit m-auto mb-5">
             <FiMapPin className="size-9" />
           </div>
@@ -42,7 +42,7 @@ export default function Contact() {
           </div>
         </div>
 
-        <div className="text-center flex flex-col w-36">
+        <div className="text-center flex flex-col w-36 m-auto">
           <div className="rounded-full bg-dark-gray p-6 border w-fit m-auto mb-5">
             <FiMessageSquare className="size-9" />
           </div>
