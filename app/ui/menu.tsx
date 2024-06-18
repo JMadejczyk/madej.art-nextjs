@@ -6,7 +6,10 @@ import {
   FiUser,
   FiMessageSquare,
   FiInstagram,
+  FiCloud,
+  FiDollarSign,
 } from "react-icons/fi";
+
 import Link from "next/link";
 import useScrollDirecton from "@/app/lib/scroll";
 import { RefObject, useCallback, useEffect, useRef } from "react";
@@ -57,10 +60,10 @@ export default function Menu(props: {
       ref={menuRef}
     >
       <Link href="/">
-        <MenuButton content={"Strona główna"} Icon={FiHome} />
+        <MenuButton content={"Portrety"} Icon={FiCamera} />
       </Link>
       <Link href="/landscapes">
-        <MenuButton content={"Krajobrazy"} Icon={FiCamera} />
+        <MenuButton content={"Krajobrazy"} Icon={FiCloud} />
       </Link>
       <Link href="/street">
         <MenuButton content={"Street photo"} Icon={FiMapPin} />
@@ -71,6 +74,9 @@ export default function Menu(props: {
       <Link href="/contact">
         <MenuButton content={"Kontakt"} Icon={FiMessageSquare} />
       </Link>
+      {/* <Link href="/prices">
+        <MenuButton content={"Cennik"} Icon={FiDollarSign} />
+      </Link> */}
       <Link href="https://www.instagram.com/madej.art/" target="_blank">
         <MenuButton content={"Instagram"} Icon={FiInstagram} />
       </Link>
